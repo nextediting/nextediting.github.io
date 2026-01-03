@@ -50,20 +50,16 @@
         }
 
         .logo-container:hover { transform: scale(1.05); }
-
         .nav-logo { height: 45px; width: auto; border-radius: 5px; transition: 0.3s; }
-
         .logo-container:hover .nav-logo { filter: drop-shadow(0 0 10px var(--accent)); }
-
         .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
 
         .nav-links { display: flex; align-items: center; gap: 30px; }
-
         .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-family: 'Arial', sans-serif; text-transform: uppercase; opacity: 0.7; transition: 0.3s; }
-
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; opacity: 1 !important; font-weight: bold; }
+        /* Style du bouton de connexion / admin */
+        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; opacity: 1 !important; font-weight: bold; border: none; color: white; cursor: pointer; text-decoration: none; font-family: 'Arial', sans-serif; font-size: 0.85rem; }
 
         /* --- VIDEO SECTION --- */
         .video-section {
@@ -98,7 +94,6 @@
         }
 
         h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; letter-spacing: 5px; }
-
         .subtitle { font-family: 'Arial', sans-serif; font-size: 1.2rem; color: #ccc; margin: 20px 0 40px 0; text-transform: uppercase; letter-spacing: 2px; }
 
         .btn-main {
@@ -111,7 +106,6 @@
             transition: 0.4s;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
-
         .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent); }
 
         /* --- FOOTER --- */
@@ -130,72 +124,29 @@
         }
 
         .brand-side { display: flex; align-items: center; gap: 20px; cursor: pointer; }
-
         .footer-img { height: 40px; border-radius: 4px; filter: grayscale(1); transition: 0.4s; }
-
-        .brand-side:hover .footer-img { 
-            filter: grayscale(0) drop-shadow(0 0 8px var(--accent)); 
-        }
-
+        .brand-side:hover .footer-img { filter: grayscale(0) drop-shadow(0 0 8px var(--accent)); }
         .brand-tagline { font-size: 0.7rem; color: #444; margin-top: 5px; font-family: 'Arial', sans-serif; }
 
         .social-grid { display: flex; justify-content: center; gap: 25px; }
-
         .social-link { color: #666; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
-
         .social-link:hover { color: var(--accent); }
 
         .legal-side { text-align: right; font-family: 'Arial', sans-serif; }
-
-        .legal-link { 
-            display: block; 
-            color: #333; 
-            text-decoration: none; 
-            font-size: 0.65rem; 
-            margin-bottom: 5px;
-            transition: 0.2s;
-        }
-
+        .legal-link { display: block; color: #333; text-decoration: none; font-size: 0.65rem; margin-bottom: 5px; transition: 0.2s; }
         .legal-link:hover { color: #666; }
-
         .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
 
-        /* --- STYLE COOKIES --- */
+        /* --- COOKIES --- */
         .cookie-banner {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.95);
-            border: 1px solid #333;
-            padding: 20px 30px;
-            border-radius: 10px;
-            display: none;
-            z-index: 9999;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            backdrop-filter: blur(10px);
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px 30px;
+            border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 500px;
+            text-align: center; backdrop-filter: blur(10px);
         }
-
-        .cookie-banner p {
-            font-family: 'Arial', sans-serif;
-            font-size: 0.85rem;
-            color: #ccc;
-            margin: 0 0 15px 0;
-        }
-
+        .cookie-banner p { font-family: 'Arial', sans-serif; font-size: 0.85rem; color: #ccc; margin: 0 0 15px 0; }
         .cookie-btns { display: flex; gap: 10px; justify-content: center; }
-
-        .cookie-btn {
-            padding: 8px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
+        .cookie-btn { padding: 8px 20px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .accept { background: var(--accent); color: white; }
         .refuse { background: #222; color: #888; }
 
@@ -213,10 +164,10 @@
         <img src="logo.png" alt="" class="nav-logo">
         <div class="logo-text">Next Editing</div>
     </div>
-    <div class="nav-links">
+    <div class="nav-links" id="authStatus">
         <a href="index.html">Accueil</a>
         <a href="portfolio.html">Portfolio</a> 
-        <a href="https://discord.gg/eEAxMb6Twu" class="nav-btn">Discord</a>
+        <a href="admin.html" class="nav-btn">Connexion</a>
     </div>
 </nav>
 
@@ -248,12 +199,12 @@
                 <a href="https://discord.gg/eEAxMb6Twu" target="_blank" class="social-link">Discord</a>
             </div>
 
-        <div class="legal-side">
-    <a href="confidentialite.html" class="legal-link">Politique de confidentialité</a>
-    <a href="cookies.html" class="legal-link">Politique de cookies</a>
-    <a href="mentions.html" class="legal-link">Mentions légales</a>
-    <p class="copyright">NEXT EDITING — 2026</p>
-</div>
+            <div class="legal-side">
+                <a href="confidentialite.html" class="legal-link">Politique de confidentialité</a>
+                <a href="cookies.html" class="legal-link">Politique de cookies</a>
+                <a href="mentions.html" class="legal-link">Mentions légales</a>
+                <p class="copyright">NEXT EDITING — 2026</p>
+            </div>
         </div>
     </footer>
 
@@ -264,6 +215,43 @@
             <button onclick="closeBanner()" class="cookie-btn refuse">Refuser</button>
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
+            authDomain: "next-editing.firebaseapp.com",
+            projectId: "next-editing",
+            storageBucket: "next-editing.firebasestorage.app",
+            messagingSenderId: "862749246676",
+            appId: "1:862749246676:web:0d3d418f64793e63026741"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Détection de l'état de connexion
+        onAuthStateChanged(auth, (user) => {
+            const status = document.getElementById('authStatus');
+            if (user) {
+                status.innerHTML = `
+                    <a href="index.html">Accueil</a>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="admin.html" style="color:var(--accent); font-weight:bold;">PANEL ADMIN</a>
+                    <button onclick="logout()" class="nav-btn" style="background:#222 !important; margin-left:10px;">Déconnexion</button>
+                `;
+            }
+        });
+
+        // Déconnexion
+        window.logout = () => {
+            signOut(auth).then(() => {
+                window.location.reload();
+            });
+        };
+    </script>
 
     <script>
         // Système de gestion des cookies
