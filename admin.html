@@ -2,88 +2,106 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Next Editing | Admin</title>
+    <title>Next Editing | Admin Panel</title>
     <style>
-        body { background: #050505; color: white; font-family: 'Arial', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
-        .admin-card { background: #0a0a0a; padding: 40px; border: 1px solid #ff0000; border-radius: 15px; width: 350px; text-align: center; }
-        input, textarea { width: 100%; margin: 10px 0; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        body { background: #050505; color: white; font-family: 'Arial', sans-serif; padding: 50px; display: flex; flex-direction: column; align-items: center; }
+        .form-card { background: #111; padding: 30px; border-radius: 15px; border: 1px solid #ff0000; width: 100%; max-width: 400px; box-shadow: 0 0 20px rgba(255,0,0,0.2); }
+        h1 { color: #ff0000; letter-spacing: 2px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { background: #cc0000; transform: scale(1.02); }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="loginForm" class="admin-card">
-        <h1 style="color:#ff0000; letter-spacing:2px;">CONNEXION</h1>
-        <input type="email" id="email" placeholder="Email">
+    <div id="loginSection" class="form-card">
+        <h1>ACCÈS ADMIN</h1>
+        <p style="font-size: 0.8rem; color: #666;">Connectez-vous pour gérer le portfolio</p>
+        <input type="email" id="email" placeholder="Email Admin">
         <input type="password" id="pass" placeholder="Mot de passe">
-        <button onclick="login()">ENTRER</button>
-        <a href="index.html" style="display:block; color:#555; margin-top:15px; text-decoration:none; font-size:0.8rem;">Retour au site</a>
+        <button onclick="login()">SE CONNECTER</button>
+        <a href="index.html" style="display:block; color:#555; margin-top:15px; text-decoration:none; font-size:0.8rem; text-align:center;">Retour au site</a>
     </div>
 
-    <div id="uploadForm" class="admin-card hidden">
-        <h1 style="color:#ff0000;">NOUVEAU PROJET</h1>
-        <input type="text" id="title" placeholder="Titre">
-        <input type="text" id="url" placeholder="Lien YouTube">
-        <textarea id="desc" placeholder="Description..." rows="3"></textarea>
-        <button onclick="publish()">PUBLIER SUR LE PORTFOLIO</button>
-        <button onclick="window.location.href='portfolio.html'" style="background:#222; margin-top:10px;">VOIR LE PORTFOLIO</button>
+    <div id="adminSection" class="form-card hidden">
+        <h1>PUBLIER UN PROJET</h1>
+        <input type="text" id="projTitle" placeholder="Titre du projet">
+        <input type="text" id="projLink" placeholder="Lien YouTube (URL)">
+        <textarea id="projDesc" placeholder="Description courte..." rows="4"></textarea>
+        <button onclick="addProject()">PUBLIER SUR LE PORTFOLIO</button>
+        <button onclick="logout()" style="background:#222; margin-top:10px;">DÉCONNEXION</button>
     </div>
 
-  <script type="module">
-    // 1. Les imports (laisse-les en haut)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // 2. Ta config Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
-        authDomain: "next-editing.firebaseapp.com",
-        projectId: "next-editing",
-        storageBucket: "next-editing.firebasestorage.app",
-        messagingSenderId: "862749246676",
-        appId: "1:862749246676:web:0d3d418f64793e63026741"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
+            authDomain: "next-editing.firebaseapp.com",
+            projectId: "next-editing",
+            storageBucket: "next-editing.firebasestorage.app",
+            messagingSenderId: "862749246676",
+            appId: "1:862749246676:web:0d3d418f64793e63026741"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
 
-    // --- C'EST ICI QUE TU METS TON CODE (Ligne 22 environ) ---
+        // GESTION DE LA CONNEXION
+        window.login = () => {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            
+            if(!e || !p) return alert("Remplissez tous les champs.");
 
-    window.login = () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('pass').value;
-        
-        if(!e || !p) return alert("Merci de remplir tous les champs");
-
-        signInWithEmailAndPassword(auth, e, p)
-            .then(() => {
-                console.log("Connecté avec succès !");
-            })
-            .catch((error) => {
-                console.error("Code erreur:", error.code);
-                if(error.code === 'auth/invalid-credential') {
-                    alert("Email ou mot de passe incorrect (vérifie aussi si l'utilisateur est bien créé dans Firebase)");
-                } else if(error.code === 'auth/user-not-found') {
-                    alert("Cet utilisateur n'existe pas dans Firebase.");
-                } else {
+            signInWithEmailAndPassword(auth, e, p)
+                .catch((error) => {
                     alert("Erreur : " + error.message);
-                }
+                });
+        };
+
+        // SURVEILLANCE DE L'ÉTAT (Affiche le bon formulaire)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+            } else {
+                document.getElementById('loginSection').classList.remove('hidden');
+                document.getElementById('adminSection').classList.add('hidden');
+            }
+        });
+
+        // DECONNEXION
+        window.logout = () => signOut(auth);
+
+        // AJOUT DE PROJET
+        window.addProject = function() {
+            const title = document.getElementById('projTitle').value;
+            const link = document.getElementById('projLink').value;
+            const desc = document.getElementById('projDesc').value;
+
+            if(!title || !link) return alert("Remplis au moins le titre et le lien !");
+
+            let videoId = link.split('v=')[1] || link.split('/').pop();
+            if(videoId.includes('&')) videoId = videoId.split('&')[0];
+            const embedLink = `https://www.youtube.com/embed/${videoId}`;
+
+            push(ref(db, 'projects'), {
+                title: title,
+                video: embedLink,
+                description: desc,
+                date: new Date().toLocaleDateString()
+            }).then(() => {
+                alert("Projet publié avec succès !");
+                window.location.href = 'portfolio.html';
+            }).catch((err) => {
+                alert("Erreur de permission : " + err.message);
             });
-    };
-
-    // N'oublie pas de garder la fonction pour ajouter les projets en dessous
-    window.addProject = function() {
-        // ... ton code addProject ici ...
-    };
-
-    // Et la surveillance de l'état
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('adminSection').style.display = 'block';
-        }
-    });
-</script>
+        };
+    </script>
+</body>
+</html>
