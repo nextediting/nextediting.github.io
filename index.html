@@ -6,8 +6,9 @@
     <title>Next Editing | Agence de Montage</title>
     <style>
         :root {
-            --accent: #ff0000;
+            --accent: #ff0000; /* Ton rouge */
             --bg: #050505;
+            --nav-bg: rgba(0, 0, 0, 0.8);
         }
 
         body, html {
@@ -16,98 +17,170 @@
             background-color: var(--bg);
             color: white;
             font-family: 'Arial Black', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- ENTÊTE (NAVBAR) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            box-sizing: border-box;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px); /* Effet flou derrière le menu */
+            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            opacity: 0.7;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .nav-btn {
+            background: var(--accent) !important;
+            padding: 10px 20px;
+            border-radius: 3px;
+            opacity: 1 !important;
+            font-weight: bold;
+        }
+
+        /* --- SECTION VIDÉO DE FOND --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
         }
 
-        /* Conteneur de la vidéo de fond */
         .video-background {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
-            overflow: hidden;
         }
 
         .video-background iframe {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 100vh;
+            top: 50%; left: 50%;
+            width: 100vw; height: 100vh;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            filter: brightness(0.4); /* Assombrit pour lire le texte */
+            filter: brightness(0.4); /* Assombrit la vidéo pour le texte */
         }
 
-        /* Ajustement pour que la vidéo remplisse toujours l'écran */
-        @media (min-aspect-ratio: 16/9) {
-          .video-background iframe { height: 56.25vw; }
-        }
-        @media (max-aspect-ratio: 16/9) {
-          .video-background iframe { width: 177.78vh; }
-        }
+        /* Ajustement ratio vidéo */
+        @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
+        @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
-        /* Interface au-dessus de la vidéo */
-        .content {
+        /* --- TEXTE ET BOUTON PRINCIPAL --- */
+        .hero-content {
             position: relative;
             z-index: 2;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
-            background: rgba(0, 0, 0, 0.2);
         }
 
         h1 {
             font-size: clamp(3rem, 10vw, 6rem);
             margin: 0;
             letter-spacing: 5px;
-            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
         }
 
         .subtitle {
             font-family: 'Arial', sans-serif;
             font-size: 1.2rem;
             color: #ccc;
-            margin-top: 10px;
-            margin-bottom: 30px;
+            margin: 15px 0 35px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .btn-discord {
-            padding: 18px 40px;
+        .btn-main {
+            padding: 20px 45px;
             background: var(--accent);
             color: white;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
-            text-transform: uppercase;
-            transition: 0.3s;
+            font-size: 1rem;
+            transition: 0.4s;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
 
-        .btn-discord:hover {
-            transform: scale(1.05);
+        .btn-main:hover {
+            transform: scale(1.05) translateY(-3px);
             box-shadow: 0 0 40px var(--accent);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .nav-links a:not(.nav-btn) { display: none; }
+            h1 { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="video-background">
-        <iframe 
-            src="https://www.youtube.com/embed/yOPjaW5HoNM?autoplay=1&mute=1&loop=1&playlist=yOPjaW5HoNM&controls=0&rel=0&showinfo=0&iv_load_policy=3" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media">
-        </iframe>
-    </div>
+    <nav class="navbar">
+        <div class="logo">Next Editing</div>
+        <div class="nav-links">
+            <a href="#">Accueil</a>
+            <a href="#services">Services</a>
+            <a href="#tarifs">Tarifs</a>
+            <a href="https://discord.gg/TON_LIEN" class="nav-btn">Discord</a>
+        </div>
+    </nav>
 
-    <div class="content">
-        <h1>NEXT EDITING</h1>
-        <p class="subtitle">L'agence qui transforme vos rushs en pépites.</p>
-        <a href="https://discord.gg/TON_LIEN" class="btn-discord">REJOINDRE LE DISCORD</a>
-    </div>
+    <section class="hero">
+        <div class="video-background">
+            <iframe 
+                src="https://www.youtube.com/embed/yOPjaW5HoNM?autoplay=1&mute=1&loop=1&playlist=yOPjaW5HoNM&controls=0&rel=0&showinfo=0&iv_load_policy=3" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media">
+            </iframe>
+        </div>
+
+        <div class="hero-content">
+            <h1>NEXT EDITING</h1>
+            <p class="subtitle">L'agence qui propulse vos vidéos en 2026.</p>
+            <a href="https://discord.gg/TON_LIEN" class="btn-main">Travailler avec nous</a>
+        </div>
+    </section>
 
 </body>
 </html>
