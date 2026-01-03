@@ -38,15 +38,16 @@
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
-            authDomain: "next-editing.firebaseapp.com",
-            projectId: "next-editing",
-            storageBucket: "next-editing.firebasestorage.app",
-            messagingSenderId: "862749246676",
-            appId: "1:862749246676:web:0d3d418f64793e63026741"
-        };
-
+const config = {
+    apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
+    authDomain: "next-editing.firebaseapp.com",
+    projectId: "next-editing",
+    storageBucket: "next-editing.firebasestorage.app",
+    messagingSenderId: "862749246676",
+    appId: "1:862749246676:web:0d3d418f64793e63026741",
+    databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app"
+};
+        
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
