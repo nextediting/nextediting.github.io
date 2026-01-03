@@ -34,16 +34,16 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // J'ai ajouté l'URL de ta base que j'ai vue sur ta photo
-    const config = {
-        apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
-        authDomain: "next-editing.firebaseapp.com",
-        projectId: "next-editing",
-        storageBucket: "next-editing.firebasestorage.app",
-        messagingSenderId: "862749246676",
-        appId: "1:862749246676:web:0d3d418f64793e63026741",
-        databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app"
-    };
+ const config = {
+            apiKey: "AIzaSyBBNFvN7KjPa7v9x3KRTnXrNNeOAgbNVFo",
+            authDomain: "next-editing.firebaseapp.com",
+            databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "next-editing",
+            storageBucket: "next-editing.firebasestorage.app",
+            messagingSenderId: "862749246676",
+            appId: "1:862749246676:web:0d3d418f64793e63026741",
+            measurementId: "G-DEQT8S8LVL"
+        };
 
     const app = initializeApp(config);
     const auth = getAuth(app);
