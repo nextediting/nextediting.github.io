@@ -160,6 +160,45 @@
 
         .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
 
+        /* --- STYLE COOKIES --- */
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #333;
+            padding: 20px 30px;
+            border-radius: 10px;
+            display: none;
+            z-index: 9999;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .cookie-banner p {
+            font-family: 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #ccc;
+            margin: 0 0 15px 0;
+        }
+
+        .cookie-btns { display: flex; gap: 10px; justify-content: center; }
+
+        .cookie-btn {
+            padding: 8px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .accept { background: var(--accent); color: white; }
+        .refuse { background: #222; color: #888; }
+
         @media (max-width: 900px) {
             .footer-wrap { grid-template-columns: 1fr; gap: 40px; text-align: center; }
             .brand-side { justify-content: center; }
@@ -217,6 +256,32 @@
             </div>
         </div>
     </footer>
+
+    <div id="cookie-banner" class="cookie-banner">
+        <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de gestion des données.</p>
+        <div class="cookie-btns">
+            <button onclick="acceptCookies()" class="cookie-btn accept">Accepter</button>
+            <button onclick="closeBanner()" class="cookie-btn refuse">Refuser</button>
+        </div>
+    </div>
+
+    <script>
+        // Système de gestion des cookies
+        window.onload = function() {
+            if (!localStorage.getItem('cookiesAccepted')) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+        };
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function closeBanner() {
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
