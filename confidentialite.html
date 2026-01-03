@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confidentialité - Next Editing</title>
+    <style>
+        /* Style identique pour la cohérence */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        body { background: #050505; color: white; font-family: 'Arial', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px 20px; margin: 0; }
+        h1 { color: #ff0000; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 40px; text-align: center; animation: fadeInUp 0.6s ease-out; }
+        .info-bubble { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 15px; padding: 30px; width: 100%; max-width: 700px; margin-bottom: 25px; transition: 0.4s; opacity: 0; animation: fadeInUp 0.6s ease-out forwards; }
+        .bubble-1 { animation-delay: 0.2s; }
+        .bubble-2 { animation-delay: 0.4s; }
+        .bubble-3 { animation-delay: 0.6s; }
+        .info-bubble:hover { border-color: #ff0000; }
+        .info-bubble h3 { color: #ff0000; margin-top: 0; font-size: 1.1rem; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 15px; }
+        .info-bubble p { color: #aaa; font-size: 0.95rem; line-height: 1.6; }
+        .back-btn { margin-top: 30px; color: #555; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; padding: 10px 20px; border: 1px solid #222; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Confidentialité</h1>
+
+    <div class="info-bubble bubble-1">
+        <h3>Gestion des données personnelles</h3>
+        <p>Next Editing s'engage à ce que la collecte et le traitement de vos données soient conformes au RGPD. Nous ne collectons pas de données à votre insu. Votre navigation est anonyme.</p>
+    </div>
+
+    <div class="info-bubble bubble-2">
+        <h3>Sécurité de vos projets vidéo</h3>
+        <p>Lorsque vous travaillez avec nous, vos "rushes" (fichiers bruts) et vos informations de projet sont stockés sur des serveurs sécurisés et cryptés. Nous garantissons la non-divulgation de vos contenus avant leur publication officielle.</p>
+    </div>
+
+    <div class="info-bubble bubble-3">
+        <h3>Droit d'accès et de suppression</h3>
+        <p>Vous disposez d'un droit total de regard sur les informations échangées sur Discord. À tout moment, vous pouvez demander la suppression définitive de vos fichiers de nos bases de données de travail.</p>
+    </div>
+
+    <a href="index.html" class="back-btn">← Retour à l'accueil</a>
+</body>
+</html>
