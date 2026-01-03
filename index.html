@@ -7,20 +7,20 @@
     <style>
         :root {
             --accent: #ff0000;
-            --bg: #050505;
+            --bg-gradient: linear-gradient(180deg, #050505 0%, #4d0000 100%);
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%;
-            background-color: var(--bg);
+            background-color: #050505;
             color: white;
             font-family: 'Arial Black', sans-serif;
             overflow-x: hidden;
-            scroll-behavior: smooth; /* Pour un défilement fluide */
+            scroll-behavior: smooth;
         }
 
-        /* --- ENTÊTE (Navbar) --- */
+        /* --- ENTÊTE --- */
         .navbar {
             position: absolute;
             top: 0;
@@ -31,7 +31,6 @@
             padding: 20px 50px;
             box-sizing: border-box;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
         }
 
         .logo-container {
@@ -58,10 +57,10 @@
 
         .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; opacity: 1 !important; font-weight: bold; }
 
-        /* --- SECTION 1 : LA VIDÉO (PLEIN ÉCRAN) --- */
+        /* --- SECTION 1 : LA VIDÉO --- */
         .video-section {
             position: relative;
-            height: 100vh; /* Prend toute la hauteur */
+            height: 100vh;
             width: 100%;
             overflow: hidden;
             background: #000;
@@ -78,16 +77,16 @@
         @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
         @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
-        /* --- SECTION 2 : LE CONTENU (SOUS LA VIDÉO) --- */
+        /* --- SECTION 2 : LE CONTENU AVEC DÉGRADÉ ROUGE --- */
         .content-section {
             padding: 100px 20px;
             text-align: center;
-            background-color: var(--bg);
+            background: var(--bg-gradient);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 50vh;
+            min-height: 60vh;
         }
 
         h1 {
@@ -100,7 +99,7 @@
         .subtitle {
             font-family: 'Arial', sans-serif;
             font-size: 1.2rem;
-            color: #888;
+            color: #ccc;
             margin: 20px 0 40px 0;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -140,7 +139,7 @@
         <div class="nav-links">
             <a href="#">Accueil</a>
             <a href="#propos">À propos</a>
-            <a href="https://discord.gg/TON_LIEN" class="nav-btn">Discord</a>
+            <a href="https://discord.gg/votre_lien" class="nav-btn">Discord</a>
         </div>
     </nav>
 
@@ -157,7 +156,7 @@
     <section id="propos" class="content-section">
         <h1>NEXT EDITING</h1>
         <p class="subtitle">L'agence qui propulse vos vidéos en 2026.</p>
-        <a href="https://discord.gg/TON_LIEN" class="btn-main">Travailler avec nous</a>
+        <a href="https://discord.gg/votre_lien" class="btn-main">Travailler avec nous</a>
     </section>
 
 </body>
