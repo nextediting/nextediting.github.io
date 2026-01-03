@@ -30,48 +30,60 @@
         <button onclick="window.location.href='portfolio.html'" style="background:#222; margin-top:10px;">VOIR LE PORTFOLIO</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+  <script type="module">
+    // 1. Les imports (laisse-les en haut)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const config = {
-            apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
-            authDomain: "next-editing.firebaseapp.com",
-            projectId: "next-editing",
-            storageBucket: "next-editing.firebasestorage.app",
-            messagingSenderId: "862749246676",
-            appId: "1:862749246676:web:0d3d418f64793e63026741"
-        };
+    // 2. Ta config Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
+        authDomain: "next-editing.firebaseapp.com",
+        projectId: "next-editing",
+        storageBucket: "next-editing.firebasestorage.app",
+        messagingSenderId: "862749246676",
+        appId: "1:862749246676:web:0d3d418f64793e63026741"
+    };
 
-        const app = initializeApp(config);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-        window.login = () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('pass').value;
-            signInWithEmailAndPassword(auth, e, p).catch(() => alert("Erreur de connexion"));
-        };
+    // --- C'EST ICI QUE TU METS TON CODE (Ligne 22 environ) ---
 
-        onAuthStateChanged(auth, (user) => {
-            if(user) {
-                document.getElementById('loginForm').classList.add('hidden');
-                document.getElementById('uploadForm').classList.remove('hidden');
-            }
-        });
+    window.login = () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('pass').value;
+        
+        if(!e || !p) return alert("Merci de remplir tous les champs");
 
-        window.publish = () => {
-            const link = document.getElementById('url').value;
-            let vidId = link.split('v=')[1] || link.split('/').pop();
-            if(vidId.includes('&')) vidId = vidId.split('&')[0];
+        signInWithEmailAndPassword(auth, e, p)
+            .then(() => {
+                console.log("Connecté avec succès !");
+            })
+            .catch((error) => {
+                console.error("Code erreur:", error.code);
+                if(error.code === 'auth/invalid-credential') {
+                    alert("Email ou mot de passe incorrect (vérifie aussi si l'utilisateur est bien créé dans Firebase)");
+                } else if(error.code === 'auth/user-not-found') {
+                    alert("Cet utilisateur n'existe pas dans Firebase.");
+                } else {
+                    alert("Erreur : " + error.message);
+                }
+            });
+    };
 
-            push(ref(db, 'projects'), {
-                title: document.getElementById('title').value,
-                video: `https://www.youtube.com/embed/${vidId}`,
-                description: document.getElementById('desc').value
-            }).then(() => { alert("Projet en ligne !"); window.location.href='portfolio.html'; });
-        };
-    </script>
-</body>
-</html>
+    // N'oublie pas de garder la fonction pour ajouter les projets en dessous
+    window.addProject = function() {
+        // ... ton code addProject ici ...
+    };
+
+    // Et la surveillance de l'état
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+        }
+    });
+</script>
