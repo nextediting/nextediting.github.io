@@ -16,12 +16,13 @@
             background-color: var(--bg);
             color: white;
             font-family: 'Arial Black', sans-serif;
-            overflow-x: hidden; /* Empêche le bug du scroll horizontal */
+            overflow-x: hidden;
+            scroll-behavior: smooth; /* Pour un défilement fluide */
         }
 
-        /* --- ENTÊTE (Elle remonte avec le scroll) --- */
+        /* --- ENTÊTE (Navbar) --- */
         .navbar {
-            position: absolute; /* Reste en haut du site, ne suit pas le scroll */
+            position: absolute;
             top: 0;
             width: 100%;
             display: flex;
@@ -30,7 +31,7 @@
             padding: 20px 50px;
             box-sizing: border-box;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
         }
 
         .logo-container {
@@ -41,76 +42,29 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        .logo-container:hover {
-            transform: scale(1.08);
-        }
+        .logo-container:hover { transform: scale(1.08); }
 
-        .nav-logo {
-            height: 45px;
-            width: auto;
-            border-radius: 5px;
-            transition: filter 0.2s;
-        }
+        .nav-logo { height: 45px; width: auto; border-radius: 5px; transition: 0.2s; }
 
-        .logo-container:hover .nav-logo {
-            filter: drop-shadow(0 0 10px var(--accent));
-        }
+        .logo-container:hover .nav-logo { filter: drop-shadow(0 0 10px var(--accent)); }
 
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: white;
-            text-transform: uppercase;
-        }
+        .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
+        .nav-links { display: flex; align-items: center; gap: 30px; }
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-family: 'Arial', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            opacity: 0.7;
-        }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-family: 'Arial', sans-serif; text-transform: uppercase; opacity: 0.7; transition: 0.3s; }
 
-        .nav-links a:hover {
-            opacity: 1;
-            color: var(--accent);
-        }
+        .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        .nav-btn {
-            background: var(--accent) !important;
-            padding: 10px 20px;
-            border-radius: 3px;
-            opacity: 1 !important;
-            font-weight: bold;
-        }
+        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; opacity: 1 !important; font-weight: bold; }
 
-        /* --- SECTION VIDÉO --- */
-        .hero {
+        /* --- SECTION 1 : LA VIDÉO (PLEIN ÉCRAN) --- */
+        .video-section {
             position: relative;
-            height: 100vh;
+            height: 100vh; /* Prend toute la hauteur */
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             overflow: hidden;
-        }
-
-        .video-background {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
+            background: #000;
         }
 
         .video-background iframe {
@@ -119,29 +73,35 @@
             width: 100vw; height: 100vh;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            filter: brightness(0.4);
         }
 
         @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
         @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
+        /* --- SECTION 2 : LE CONTENU (SOUS LA VIDÉO) --- */
+        .content-section {
+            padding: 100px 20px;
             text-align: center;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 50vh;
         }
 
         h1 {
             font-size: clamp(3rem, 10vw, 6rem);
             margin: 0;
             letter-spacing: 5px;
+            color: white;
         }
 
         .subtitle {
             font-family: 'Arial', sans-serif;
             font-size: 1.2rem;
-            color: #ccc;
-            margin: 15px 0 35px 0;
+            color: #888;
+            margin: 20px 0 40px 0;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
@@ -159,11 +119,10 @@
         }
 
         .btn-main:hover {
-            transform: scale(1.05) translateY(-3px);
+            transform: scale(1.05);
             box-shadow: 0 0 40px var(--accent);
         }
 
-        /* Responsive Mobile */
         @media (max-width: 768px) {
             .navbar { padding: 15px 20px; }
             .nav-links a:not(.nav-btn) { display: none; }
@@ -174,19 +133,18 @@
 <body>
 
     <nav class="navbar">
-        <div class="logo-container">
+        <div class="logo-container" onclick="window.scrollTo(0,0)">
             <img src="logo.png" alt="" class="nav-logo">
             <div class="logo-text">Next Editing</div>
         </div>
         <div class="nav-links">
             <a href="#">Accueil</a>
-            <a href="#services">Services</a>
-            <a href="#tarifs">Tarifs</a>
+            <a href="#propos">À propos</a>
             <a href="https://discord.gg/TON_LIEN" class="nav-btn">Discord</a>
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="video-section">
         <div class="video-background">
             <iframe 
                 src="https://www.youtube.com/embed/yOPjaW5HoNM?autoplay=1&mute=1&loop=1&playlist=yOPjaW5HoNM&controls=0&rel=0&showinfo=0&iv_load_policy=3" 
@@ -194,17 +152,13 @@
                 allow="autoplay; encrypted-media">
             </iframe>
         </div>
-
-        <div class="hero-content">
-            <h1>NEXT EDITING</h1>
-            <p class="subtitle">L'agence qui propulse vos vidéos en 2026.</p>
-            <a href="https://discord.gg/TON_LIEN" class="btn-main">Travailler avec nous</a>
-        </div>
     </section>
 
-    <div style="height: 100vh; background: #050505; display: flex; align-items: center; justify-content: center;">
-        <h2 id="services">SECTION SERVICES (À VENIR)</h2>
-    </div>
+    <section id="propos" class="content-section">
+        <h1>NEXT EDITING</h1>
+        <p class="subtitle">L'agence qui propulse vos vidéos en 2026.</p>
+        <a href="https://discord.gg/TON_LIEN" class="btn-main">Travailler avec nous</a>
+    </section>
 
 </body>
 </html>
