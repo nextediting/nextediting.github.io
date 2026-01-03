@@ -2,60 +2,40 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Next Editing</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <title>Next Editing | Admin</title>
     <style>
-        :root { --accent: #ff0000; }
-        body { margin: 0; padding: 0; background: #050505; color: white; font-family: 'Arial', sans-serif; min-height: 100vh; }
-        .navbar { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: rgba(0,0,0,0.9); z-index: 999; box-sizing: border-box; border-bottom: 1px solid rgba(255,255,255,0.1);}
-        
-        .main { padding: 150px 50px 50px; max-width: 1400px; margin: 0 auto; }
-        h1 { text-align: center; font-family: 'Arial Black'; font-size: 3rem; margin-bottom: 50px; letter-spacing: 5px; }
-
-        /* GRILLE DE 3 PROJETS */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        
-        .project-card { background: #111; border-radius: 15px; overflow: hidden; border: 1px solid #222; transition: 0.3s; }
-        .project-card:hover { border-color: var(--accent); transform: translateY(-10px); }
-        .video-container { position: relative; padding-top: 56.25%; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .details { padding: 20px; }
-        .details h3 { margin: 0; font-family: 'Arial Black'; color: white; }
-        .details p { color: #888; font-size: 0.9rem; margin-top: 10px; }
-
-        /* BOUTON + FLOTTANT */
-        #addBtn { display: none; position: fixed; bottom: 40px; right: 40px; width: 70px; height: 70px; background: var(--accent); color: white; border-radius: 50%; align-items: center; justify-content: center; text-decoration: none; font-size: 40px; font-weight: bold; box-shadow: 0 0 30px rgba(255,0,0,0.5); z-index: 1000; transition: 0.3s; }
-        #addBtn:hover { transform: scale(1.1) rotate(90deg); }
-
-        @media (max-width: 1100px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 750px) { .portfolio-grid { grid-template-columns: 1fr; } .main { padding: 120px 20px; } }
+        body { background: #050505; color: white; font-family: 'Arial', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; }
+        .admin-card { background: #0a0a0a; padding: 40px; border: 1px solid #ff0000; border-radius: 15px; width: 350px; text-align: center; }
+        input, textarea { width: 100%; margin: 10px 0; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" style="color:white; text-decoration:none; font-family: 'Arial Black';">Next Editing</a>
-        <div id="authLinks" style="display:flex; gap:20px; align-items:center;">
-            <a href="index.html" style="color:white; text-decoration:none; font-size: 0.8rem;">ACCUEIL</a>
-            <a href="admin.html" style="background:var(--accent); padding:10px 20px; border-radius:5px; color:white; text-decoration:none; font-weight:bold; font-size: 0.8rem;">CONNEXION</a>
-        </div>
-    </nav>
-
-    <div class="main">
-        <h1>PORTFOLIO</h1>
-        <div class="portfolio-grid" id="projectList">
-            </div>
+    <div id="loginForm" class="admin-card">
+        <h1 style="color:#ff0000; letter-spacing:2px;">CONNEXION</h1>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="pass" placeholder="Mot de passe">
+        <button onclick="login()">ENTRER</button>
+        <a href="index.html" style="display:block; color:#555; margin-top:15px; text-decoration:none; font-size:0.8rem;">Retour au site</a>
     </div>
 
-    <a href="admin.html" id="addBtn">+</a>
+    <div id="uploadForm" class="admin-card hidden">
+        <h1 style="color:#ff0000;">NOUVEAU PROJET</h1>
+        <input type="text" id="title" placeholder="Titre">
+        <input type="text" id="url" placeholder="Lien YouTube">
+        <textarea id="desc" placeholder="Description..." rows="3"></textarea>
+        <button onclick="publish()">PUBLIER SUR LE PORTFOLIO</button>
+        <button onclick="window.location.href='portfolio.html'" style="background:#222; margin-top:10px;">VOIR LE PORTFOLIO</button>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
             authDomain: "next-editing.firebaseapp.com",
             projectId: "next-editing",
@@ -64,37 +44,34 @@
             appId: "1:862749246676:web:0d3d418f64793e63026741"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const app = initializeApp(config);
         const auth = getAuth(app);
+        const db = getDatabase(app);
 
-        // Récupérer les projets
-        onValue(ref(db, 'projects'), (snapshot) => {
-            const data = snapshot.val();
-            const container = document.getElementById('projectList');
-            container.innerHTML = "";
-            if (data) {
-                Object.keys(data).reverse().forEach(id => {
-                    const p = data[id];
-                    container.innerHTML += `
-                        <div class="project-card">
-                            <div class="video-container"><iframe src="${p.video}" allowfullscreen></iframe></div>
-                            <div class="details"><h3>${p.title}</h3><p>${p.description}</p></div>
-                        </div>`;
-                });
-            }
-        });
+        window.login = () => {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            signInWithEmailAndPassword(auth, e, p).catch(() => alert("Erreur de connexion"));
+        };
 
-        // Mode Admin
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('addBtn').style.display = "flex";
-                document.getElementById('authLinks').innerHTML = `
-                    <a href="index.html" style="color:white; text-decoration:none;">ACCUEIL</a>
-                    <a href="admin.html" style="color:var(--accent); font-weight:bold; text-decoration:none;">PANEL ADMIN</a>
-                `;
+            if(user) {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('uploadForm').classList.remove('hidden');
             }
         });
+
+        window.publish = () => {
+            const link = document.getElementById('url').value;
+            let vidId = link.split('v=')[1] || link.split('/').pop();
+            if(vidId.includes('&')) vidId = vidId.split('&')[0];
+
+            push(ref(db, 'projects'), {
+                title: document.getElementById('title').value,
+                video: `https://www.youtube.com/embed/${vidId}`,
+                description: document.getElementById('desc').value
+            }).then(() => { alert("Projet en ligne !"); window.location.href='portfolio.html'; });
+        };
     </script>
 </body>
 </html>
