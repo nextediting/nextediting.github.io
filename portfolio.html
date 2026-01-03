@@ -10,7 +10,6 @@
             --accent: #ff0000;
         }
 
-        /* Fond dégradé appliqué directement au HTML pour éviter les bugs */
         html {
             background: #050505 linear-gradient(180deg, #050505 0%, #4d0000 100%) no-repeat fixed;
         }
@@ -51,7 +50,7 @@
 
         /* --- CONTENU --- */
         .main-content {
-            flex: 1; /* Pousse le footer vers le bas */
+            flex: 1;
             padding: 150px 20px 50px;
             max-width: 1200px;
             margin: 0 auto;
@@ -76,46 +75,48 @@
         }
 
         .project-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-
         .video-wrapper { position: relative; padding-top: 56.25%; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
         .project-details { padding: 20px; font-family: 'Arial', sans-serif; }
         .project-details h3 { margin: 0; font-family: 'Arial Black', sans-serif; font-size: 1.1rem; }
         .project-details p { color: #aaa; font-size: 0.9rem; margin-top: 10px; }
 
-        /* --- FOOTER --- */
-        footer {
-            background: #000;
-            padding: 50px;
-            border-top: 1px solid #222;
+        /* --- PIED DE PAGE (Footer Style identique à l'accueil) --- */
+        .site-footer {
+            background: rgba(0,0,0,0.9);
+            padding: 60px 50px;
+            border-top: 1px solid #1a0000;
+            margin-top: 50px;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .footer-content {
-            max-width: 1200px;
+        .footer-wrap {
+            max-width: 1300px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 30px;
         }
 
-        .socials { display: flex; gap: 20px; }
-        .socials a { color: #666; text-decoration: none; font-size: 0.8rem; font-family: 'Arial', sans-serif; transition: 0.3s; }
-        .socials a:hover { color: var(--accent); }
+        .brand-side { display: flex; align-items: center; gap: 20px; cursor: pointer; }
+        .footer-img { height: 40px; border-radius: 4px; }
+        .brand-name { font-weight: bold; font-size: 1.1rem; }
+        .brand-tagline { font-size: 0.7rem; color: #444; margin-top: 5px; font-family: 'Arial', sans-serif; }
 
-        .legal { text-align: right; }
-        .legal a { display: block; color: #444; text-decoration: none; font-size: 0.7rem; font-family: 'Arial', sans-serif; margin-bottom: 5px; }
-        .copyright { color: #666; font-size: 0.8rem; margin-top: 10px; }
+        .social-grid { display: flex; justify-content: center; gap: 25px; }
+        .social-link { color: #666; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
+        .social-link:hover { color: var(--accent); }
 
-        @media (max-width: 768px) {
-            .footer-content { flex-direction: column; text-align: center; }
-            .legal { text-align: center; }
-            .navbar { padding: 15px 20px; }
-            .logo-text { display: none; }
+        .legal-side { text-align: right; font-family: 'Arial', sans-serif; }
+        .legal-link { display: block; color: #333; text-decoration: none; font-size: 0.65rem; margin-bottom: 5px; transition: 0.2s; }
+        .legal-link:hover { color: #666; }
+        .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
+
+        @media (max-width: 900px) {
+            .footer-wrap { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .brand-side { justify-content: center; }
+            .legal-side { text-align: center; }
         }
     </style>
 </head>
@@ -135,7 +136,6 @@
 
     <div class="main-content">
         <h1>PORTFOLIO</h1>
-        
         <div class="portfolio-grid">
             <div class="project-card">
                 <div class="video-wrapper">
@@ -143,30 +143,33 @@
                 </div>
                 <div class="project-details">
                     <h3>Projet #1</h3>
-                    <p>Description du montage vidéo effectué.</p>
+                    <p>Découvrez mes capacités en montage vidéo dynamique.</p>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <span style="font-weight: bold;">Next Editing</span>
-                <p style="font-size: 0.7rem; color: #444; margin-top: 5px; font-family: Arial;">L'excellence visuelle.</p>
+    <footer class="site-footer">
+        <div class="footer-wrap">
+            <div class="brand-side" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <img src="logo.png" alt="" class="footer-img">
+                <div class="brand-info">
+                    <span class="brand-name">Next Editing</span>
+                    <p class="brand-tagline">L'excellence visuelle au service de vos projets.</p>
+                </div>
             </div>
             
-            <div class="socials">
-                <a href="https://youtube.com/@nextediting-1">YouTube</a>
-                <a href="https://github.com/nextediting">GitHub</a>
-                <a href="https://discord.gg/eEAxMb6Twu">Discord</a>
+            <div class="social-grid">
+                <a href="https://youtube.com/@nextediting-1?si=QNBiPbEElEF38Y07" target="_blank" class="social-link">YouTube</a>
+                <a href="https://github.com/nextediting" target="_blank" class="social-link">GitHub</a>
+                <a href="https://discord.gg/eEAxMb6Twu" target="_blank" class="social-link">Discord</a>
             </div>
 
-            <div class="legal">
-                <a href="confidentialite.html">Confidentialité</a>
-                <a href="cookies.html">Cookies</a>
-                <a href="mentions.html">Mentions légales</a>
-                <div class="copyright">© NEXT EDITING 2026</div>
+            <div class="legal-side">
+                <a href="confidentialite.html" class="legal-link">Politique de confidentialité</a>
+                <a href="cookies.html" class="legal-link">Politique de cookies</a>
+                <a href="mentions.html" class="legal-link">Mentions légales</a>
+                <p class="copyright">NEXT EDITING — 2026</p>
             </div>
         </div>
     </footer>
