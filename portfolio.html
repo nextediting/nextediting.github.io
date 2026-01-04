@@ -18,52 +18,108 @@
             color: white;
             font-family: 'Arial Black', sans-serif;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* --- NAVIGATION --- */
         .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 50px; background: rgba(0,0,0,0.8);
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            box-sizing: border-box;
+            z-index: 1000;
+            background: rgba(0,0,0,0.5);
         }
         .logo-container { display: flex; align-items: center; text-decoration: none; color: white; gap: 15px; }
         .logo-img { height: 45px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; transition: 0.3s; opacity: 0.8; }
+        .nav-links a:hover { opacity: 1; color: var(--accent); }
 
         /* --- PORTFOLIO --- */
         .portfolio-header { margin-top: 50px; text-align: center; }
+        .portfolio-header h1 { font-size: 3rem; letter-spacing: 5px; margin-bottom: 0; }
+
         .project-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px; padding: 50px; max-width: 1200px; margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
         .project-card {
-            background: rgba(10, 10, 10, 0.8); border: 1px solid #222;
-            border-radius: 15px; overflow: hidden; position: relative;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #222;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: 0.4s;
         }
+
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         .project-info { padding: 20px; }
-        
-        /* Bouton Supprimer (Admin seulement) */
-        .delete-btn {
-            position: absolute; top: 10px; right: 10px;
-            background: var(--accent); color: white; border: none;
-            padding: 5px 10px; border-radius: 5px; cursor: pointer;
-            font-size: 0.7rem; display: none; z-index: 10;
-        }
+        .project-info h3 { margin: 0; color: var(--accent); }
 
         /* --- SYSTEME D'AVIS --- */
-        .reviews-section { max-width: 800px; margin: 50px auto; padding: 20px; text-align: center; }
-        .review-form { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 30px; }
+        .reviews-section { max-width: 800px; margin: 50px auto; padding: 20px; text-align: center; width: 90%; }
+        .review-form { background: rgba(20,20,20,0.5); padding: 25px; border-radius: 15px; border: 1px solid #333; margin-bottom: 40px; }
         .review-form input, .review-form textarea {
-            width: 100%; padding: 10px; margin: 10px 0; background: #000; border: 1px solid #444; color: white;
+            width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box;
         }
-        .review-card { background: #0a0a0a; padding: 15px; border-left: 4px solid var(--accent); margin-bottom: 15px; text-align: left; }
+        .review-card { 
+            background: rgba(255,255,255,0.03); 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px; 
+            text-align: left; 
+            position: relative;
+            border-left: 3px solid var(--accent);
+        }
 
-        /* --- FOOTER (Identique Index) --- */
-        footer { background: #000; padding: 40px 20px; text-align: center; border-top: 1px solid #1a1a1a; margin-top: auto; }
-        .footer-links a { color: #555; text-decoration: none; margin: 0 15px; font-size: 0.8rem; transition: 0.3s; }
+        /* --- BOUTON SUPPRIMER (Sur chaque élément) --- */
+        .delete-btn {
+            display: none; /* Caché par défaut, affiché si admin */
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .delete-btn:hover { background: white; color: black; }
+
+        /* --- FOOTER (Exactement comme Index) --- */
+        footer {
+            background-color: #000;
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+            margin-top: auto;
+        }
+        .footer-links { margin-bottom: 30px; }
+        .footer-links a {
+            color: #555;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
         .footer-links a:hover { color: var(--accent); }
+        .copyright { color: #222; font-size: 0.7rem; letter-spacing: 2px; }
+
     </style>
 </head>
 <body>
@@ -75,22 +131,23 @@
         </a>
         <div class="nav-links" id="authStatus">
             <a href="index.html">Accueil</a>
-            <a href="portfolio.html">Portfolio</a>
+            <a href="portfolio.html" style="color:var(--accent); opacity:1;">Portfolio</a>
         </div>
     </nav>
 
     <div class="portfolio-header">
         <h1>PORTFOLIO</h1>
+        <p style="color: #666; letter-spacing: 3px;">VOS PROJETS RÉALISÉS</p>
     </div>
 
     <div class="project-grid" id="projectList"></div>
 
     <div class="reviews-section">
-        <h2 style="color:var(--accent)">AVIS CLIENTS</h2>
+        <h2 style="letter-spacing: 5px;">AVIS CLIENTS</h2>
         <div class="review-form">
-            <input type="text" id="revName" placeholder="Votre Nom">
-            <textarea id="revText" placeholder="Votre témoignage..."></textarea>
-            <button onclick="addReview()" style="background:var(--accent); color:white; border:none; padding:10px 20px; cursor:pointer;">PUBLIER MON AVIS</button>
+            <input type="text" id="revName" placeholder="Votre Prénom / Pseudo">
+            <textarea id="revText" placeholder="Votre expérience avec Next Editing..." rows="3"></textarea>
+            <button onclick="addReview()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">PUBLIER MON AVIS</button>
         </div>
         <div id="reviewsList"></div>
     </div>
@@ -101,7 +158,7 @@
             <a href="cookies.html">Cookies</a>
             <a href="mentions.html">Mentions Légales</a>
         </div>
-        <p style="color: #333; font-size: 0.7rem; margin-top: 20px;">© 2026 NEXT EDITING. TOUS DROITS RÉSERVÉS.</p>
+        <p class="copyright">© 2026 NEXT EDITING. TOUS DROITS RÉSERVÉS.</p>
     </footer>
 
     <script type="module">
@@ -123,34 +180,29 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // --- GESTION PROJETS ---
+        // --- CHARGEMENT PROJETS ---
         onValue(ref(db, 'projects'), (snapshot) => {
-            const projectList = document.getElementById('projectList');
-            projectList.innerHTML = "";
+            const list = document.getElementById('projectList');
+            list.innerHTML = "";
             const data = snapshot.val();
-            if (data) {
+            if(data) {
                 Object.keys(data).reverse().forEach(id => {
                     const p = data[id];
-                    projectList.innerHTML += `
+                    list.innerHTML += `
                         <div class="project-card">
-                            <button class="delete-btn" onclick="deleteItem('projects/${id}')">SUPPRIMER</button>
                             <div class="video-wrapper"><iframe src="${p.video}"></iframe></div>
-                            <div class="project-info"><h3>${p.title}</h3><p>${p.description}</p></div>
+                            <div class="project-info">
+                                <h3>${p.title}</h3>
+                                <p style="color:#666; font-family:Arial; font-size:0.9rem;">${p.description}</p>
+                                <button class="delete-btn" onclick="deleteItem('projects/${id}')">SUPPRIMER CE PROJET</button>
+                            </div>
                         </div>`;
                 });
             }
-            updateAdminUI();
+            checkAdmin();
         });
 
-        // --- GESTION AVIS ---
-        window.addReview = () => {
-            const name = document.getElementById('revName').value;
-            const text = document.getElementById('revText').value;
-            if(name && text) {
-                push(ref(db, 'reviews'), { name, text }).then(() => location.reload());
-            }
-        };
-
+        // --- CHARGEMENT AVIS ---
         onValue(ref(db, 'reviews'), (snapshot) => {
             const list = document.getElementById('reviewsList');
             list.innerHTML = "";
@@ -160,26 +212,38 @@
                     const r = data[id];
                     list.innerHTML += `
                         <div class="review-card">
-                            <button class="delete-btn" onclick="deleteItem('reviews/${id}')">X</button>
-                            <strong style="color:var(--accent)">${r.name}</strong>
-                            <p style="font-family:Arial; font-size:0.9rem; color:#ccc;">"${r.text}"</p>
+                            <strong style="color:var(--accent);">${r.name}</strong>
+                            <p style="font-family:Arial; color:#aaa; margin:10px 0;">"${r.text}"</p>
+                            <button class="delete-btn" onclick="deleteItem('reviews/${id}')">SUPPRIMER L'AVIS</button>
                         </div>`;
                 });
             }
-            updateAdminUI();
+            checkAdmin();
         });
 
-        // --- FONCTIONS ADMIN ---
+        // --- ACTIONS ---
+        window.addReview = () => {
+            const name = document.getElementById('revName').value;
+            const text = document.getElementById('revText').value;
+            if(name && text) {
+                push(ref(db, 'reviews'), { name, text }).then(() => {
+                    document.getElementById('revName').value = "";
+                    document.getElementById('revText').value = "";
+                    alert("Merci pour votre avis !");
+                });
+            } else { alert("Remplissez tous les champs !"); }
+        };
+
         window.deleteItem = (path) => {
-            if(confirm("Supprimer définitivement ?")) {
-                remove(ref(db, path));
+            if(confirm("Confirmer la suppression ?")) {
+                remove(ref(db, path)).catch(e => alert("Erreur: " + e.message));
             }
         };
 
-        function updateAdminUI() {
+        function checkAdmin() {
             const user = auth.currentUser;
-            if (user) {
-                document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'block');
+            if(user) {
+                document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'inline-block');
                 document.getElementById('authStatus').innerHTML = `
                     <a href="index.html">Accueil</a>
                     <a href="portfolio.html" style="color:var(--accent)">Portfolio</a>
@@ -188,7 +252,7 @@
             }
         }
 
-        onAuthStateChanged(auth, updateAdminUI);
+        onAuthStateChanged(auth, checkAdmin);
     </script>
 </body>
 </html>
