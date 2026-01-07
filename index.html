@@ -167,43 +167,57 @@
         const db = getDatabase(app);
 
         function loadNotifications() {
-            // On écoute la branche 'notifications' de ta base Firebase
+            const list = document.getElementById('notifList');
+            const badge = document.getElementById('notifBadge');
+
             onValue(query(ref(db, 'notifications'), limitToLast(5)), (snap) => {
-                const list = document.getElementById('notifList');
-                const badge = document.getElementById('notifBadge');
                 let html = "";
                 let count = 0;
-
                 const data = snap.val();
+
                 if (data) {
-                    // On transforme l'objet en tableau et on l'inverse pour avoir les plus récentes en haut
-                    Object.values(data).reverse().forEach(n => {
-                        // On récupère le titre et le message selon les noms de champs probables du panel
-                        const title = n.title || n.titre || "ANNONCE";
-                        const message = n.message || n.text || n.desc || "";
+                    // On boucle sur chaque notification
+                    Object.keys(data).reverse().forEach(key => {
+                        const n = data[key];
                         
-                        if (message || n.title) {
+                        // Détection automatique des champs (Titre et Message)
+                        // On cherche n'importe quelle variante envoyée par le panel
+                        const title = n.title || n.titre || n.subject || "ANNONCE";
+                        const message = n.message || n.text || n.desc || n.msg || (typeof n === 'string' ? n : "");
+
+                        if (message || title !== "ANNONCE") {
                             html += `
-                                <div class="notif-item">
-                                    <strong>${title.toUpperCase()}</strong>
-                                    <p>${message}</p>
+                                <div class="notif-item" style="border-bottom: 1px solid #222; padding: 12px;">
+                                    <strong style="color: #ff0000; font-size: 0.7rem; display: block; margin-bottom: 3px;">
+                                        ${title.toUpperCase()}
+                                    </strong>
+                                    <p style="margin: 0; font-size: 0.85rem; color: #ccc; font-family: Arial, sans-serif;">
+                                        ${message}
+                                    </p>
                                 </div>`;
                             count++;
                         }
                     });
                 }
-                
-                list.innerHTML = count > 0 ? html : '<div class="notif-item" style="text-align:center; opacity:0.3;">Aucune notification</div>';
-                badge.innerText = count;
-                badge.style.display = count > 0 ? "flex" : "none";
+
+                if (count > 0) {
+                    list.innerHTML = html;
+                    badge.innerText = count;
+                    badge.style.display = "flex";
+                } else {
+                    list.innerHTML = '<div class="notif-item" style="text-align:center; padding: 20px; opacity:0.3; font-size: 0.8rem;">Aucune notification</div>';
+                    badge.style.display = "none";
+                }
+            }, (error) => {
+                console.error("Erreur Firebase :", error);
             });
         }
 
-        // Gestion de l'affichage du menu déroulant
+        // Toggle du menu
         document.getElementById('notifBtn').onclick = (e) => {
             e.stopPropagation();
             const d = document.getElementById('notifDropdown');
-            d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+            d.style.display = (d.style.display === 'flex') ? 'none' : 'flex';
         };
 
         window.onclick = () => {
