@@ -77,15 +77,14 @@
             overflow: hidden;
         }
 
-        /* Amélioration du style de l'item pour éviter le "trait" */
         .notif-item { 
             padding: 12px 15px; 
             border-bottom: 1px solid #1a1a1a; 
             font-family: 'Arial', sans-serif; 
             font-size: 0.9rem; 
             color: #eee; 
-            display: block; /* Force l'affichage en bloc */
-            min-height: 40px; /* Évite l'effet trait si vide */
+            display: block; 
+            min-height: 40px; 
         }
         .notif-item strong { 
             color: var(--accent); 
@@ -120,8 +119,10 @@
             box-shadow: 0 0 25px rgba(255, 0, 0, 0.4); text-transform: uppercase;
         }
 
+        /* --- FOOTER --- */
         .site-footer { background: #020202; padding: 70px 50px; border-top: 1px solid #1a0000; }
         .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+        .footer-brand { display: flex; align-items: center; gap: 20px; }
         .footer-legal { text-align: right; color: #333; font-family: Arial; font-size: 0.75rem; }
     </style>
 </head>
@@ -205,7 +206,6 @@
             }
         });
 
-        // --- GESTION NOTIFS ---
         function loadNotifications() {
             const notifRef = query(ref(db, 'notifications'), limitToLast(5));
             onValue(notifRef, (snapshot) => {
@@ -223,20 +223,24 @@
                     count++;
                 }
 
-                // 2. Firebase (Correction ici pour éviter le trait vide)
+                // 2. Firebase
                 const data = snapshot.val();
                 if (data) {
-                    Object.entries(data).reverse().forEach(([id, notif]) => {
+                    Object.values(data).reverse().forEach(notif => {
+                        // CORRECTION : On vérifie toutes les clés possibles (title/titre et message/text)
+                        const rawTitle = notif.title || notif.titre || "INFO";
+                        const rawText = notif.message || notif.text || notif.msg || "Nouvelle mise à jour";
+
                         html += `
                             <div class="notif-item">
-                                <strong>${notif.title || 'INFO'}</strong>
-                                <p>${notif.message || 'Nouvelle notification'}</p>
+                                <strong>${rawTitle}</strong>
+                                <p>${rawText}</p>
                             </div>`;
                         count++;
                     });
                 }
 
-                list.innerHTML = count > 0 ? html : '<div class="notif-item">Aucune notification</div>';
+                list.innerHTML = count > 0 ? html : '<div class="notif-item" style="text-align:center; opacity:0.5;">Aucune notification</div>';
                 badge.innerText = count;
                 badge.style.display = count > 0 ? "flex" : "none";
             });
