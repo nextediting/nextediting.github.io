@@ -105,24 +105,39 @@
 
     loginBtn.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
 
+    // --- MODIF 1 : NETTOYAGE URL ET RECOUPERATION TOKEN ---
     const fragment = new URLSearchParams(window.location.hash.slice(1));
-    const accessToken = fragment.get('access_token');
+    let accessToken = fragment.get('access_token');
+    
+    if (accessToken) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        localStorage.setItem('session_token', accessToken);
+    } else {
+        accessToken = localStorage.getItem('session_token');
+    }
 
     if (accessToken) {
         loginBtn.style.display = 'none';
         fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${accessToken}` } })
         .then(res => res.json())
         .then(async (user) => {
+            if (!user.id) {
+                localStorage.removeItem('session_token');
+                return;
+            }
+
             const userRef = ref(db, `utilisateurs/${user.id}`);
             const snapshot = await get(userRef);
 
             if (snapshot.exists()) {
                 const userData = snapshot.val();
-                const today = new Date().toLocaleDateString('fr-CA'); // Format YYYY-MM-DD
+                const today = new Date().toLocaleDateString('fr-CA'); 
 
                 if (userData.invites < 2) {
                     errorMsg.innerText = "Accès refusé : 2 invitations requises.";
-                } else if (userData.derniere_roue === today) {
+                } 
+                // --- MODIF 2 : VERIFICATION DATE POUR BLOQUER F5 ---
+                else if (userData.derniere_roue === today) {
                     statusText.innerHTML = `Bienvenue <b style="color:white">${user.username}</b> !`;
                     errorMsg.style.color = "#ffae00";
                     errorMsg.innerText = "Tu as déjà joué aujourd'hui. Reviens demain !";
@@ -132,7 +147,7 @@
                     setupWheel(user.id, userData.credits || 0);
                 }
             } else {
-                errorMsg.innerText = "Profil non trouvé dans la base.";
+                errorMsg.innerText = "Profil non trouvé.";
             }
         });
     }
@@ -148,7 +163,6 @@
             isSpinning = true;
             spinBtn.disabled = true;
             result.innerText = "🎡 Tirage en cours...";
-            result.style.color = "white";
 
             const angles = [30, 90, 150, 210, 270]; 
             const targetAngle = angles[Math.floor(Math.random() * angles.length)];
@@ -173,110 +187,9 @@
                 });
 
                 result.innerHTML = `GAGNÉ : <span style="color:#00ff00">+${gain} CRÉDITS</span>`;
-                spinBtn.innerText = "À DEMAIN !";
-                isSpinning = false;
-            }, 5000);
-        };
-    }
-</script>
-</body>
-</html>                <div class="pointer"></div>
-                <div id="wheel" class="wheel">
-                    <div class="segment-text" style="transform: rotate(30deg);"><span>100 CRÉDITS</span></div>
-                    <div class="segment-text" style="transform: rotate(90deg);"><span>500 CRÉDITS</span></div>
-                    <div class="segment-text" style="transform: rotate(150deg);"><span>200 CRÉDITS</span></div>
-                    <div class="segment-text" style="transform: rotate(210deg);"><span>1000 CRÉDITS</span></div>
-                    <div class="segment-text" style="transform: rotate(270deg);"><span>200 CRÉDITS</span></div>
-                    <div class="segment-text" style="transform: rotate(330deg); color: black;"><span>NITRO</span></div>
-                </div>
-            </div>
-            <button id="spinBtn">LANCER LA ROUE</button>
-            <div id="wheelResult"></div>
-        </div>
-        
-        <div id="error-msg" style="color: #ff4444; margin-top: 20px; font-weight: bold;"></div>
-    </div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
-        authDomain: "next-editing.firebaseapp.com",
-        databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "next-editing",
-        storageBucket: "next-editing.firebasestorage.app",
-        messagingSenderId: "862749246676",
-        appId: "1:862749246676:web:0d3d418f64793e63026741"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    const CLIENT_ID = "1454969132188565707"; 
-    const REDIRECT_URI = window.location.href.split('#')[0].split('?')[0]; 
-
-    const loginBtn = document.getElementById('loginBtn');
-    const statusText = document.getElementById('status-text');
-
-    loginBtn.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
-
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
-    const accessToken = fragment.get('access_token');
-
-    if (accessToken) {
-        loginBtn.style.display = 'none';
-        fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${accessToken}` } })
-        .then(res => res.json())
-        .then(async (user) => {
-            const userRef = ref(db, `utilisateurs/${user.id}`);
-            const snapshot = await get(userRef);
-
-            if (snapshot.exists() && snapshot.val().invites >= 2) {
-                statusText.innerHTML = `Bienvenue <b style="color:white">${user.username}</b> !`;
-                document.getElementById('wheelArea').style.display = 'block';
-                setupWheel(user.id, snapshot.val().credits || 0);
-            } else {
-                document.getElementById('error-msg').innerText = "Accès refusé : 2 invitations requises.";
-            }
-        });
-    }
-
-    function setupWheel(userId, currentCredits) {
-        const wheel = document.getElementById('wheel');
-        const spinBtn = document.getElementById('spinBtn');
-        const result = document.getElementById('wheelResult');
-        let isSpinning = false;
-
-        spinBtn.onclick = async () => {
-            if (isSpinning) return;
-            isSpinning = true;
-            result.innerText = "🎡 Tirage en cours...";
-            result.style.color = "white";
-
-            // Liste des angles gagnants (on évite 330 qui est le Nitro)
-            const angles = [30, 90, 150, 210, 270]; 
-            const targetAngle = angles[Math.floor(Math.random() * angles.length)];
-            
-            // Rotation : on soustrait l'angle pour que le pointeur (en haut) tombe sur le bon segment
-            const rotation = 3600 + (360 - targetAngle); 
-            wheel.style.transform = `rotate(${rotation}deg)`;
-
-            setTimeout(async () => {
-                isSpinning = false;
-                let gain = 0;
-                if (targetAngle === 30) gain = 100;
-                else if (targetAngle === 90) gain = 500;
-                else if (targetAngle === 150) gain = 200;
-                else if (targetAngle === 210) gain = 1000;
-                else if (targetAngle === 270) gain = 200;
-
-                result.innerHTML = `GAGNÉ : <span style="color:#00ff00">+${gain} CRÉDITS</span>`;
                 
-                // Sauvegarde Firebase
-                const newTotal = currentCredits + gain;
-                await update(ref(db, `utilisateurs/${userId}`), { credits: newTotal });
+                // Bloque le bouton et rafraîchit pour valider le verrouillage
+                setTimeout(() => { location.reload(); }, 3000);
             }, 5000);
         };
     }
