@@ -3,12 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Next Editing | Agence de Montage Vidéo</title>
-    <meta name="description" content="Next Editing : Le futur du montage entre vos mains. Agence de montage vidéo dynamique.">
-    <meta name="keywords" content="Next Editing, montage vidéo, agence montage, éditeur vidéo, montage 2026">
-    <meta name="google-site-verification" content="lnbKobPpMjgZdyEytUEB7io6CYSxVi7UKu1texiQVz0" />
-
     <link rel="icon" type="image/png" href="logo.png">
 
     <style>
@@ -30,8 +25,7 @@
         /* --- NAVIGATION --- */
         .navbar {
             position: absolute;
-            top: 0;
-            width: 100%;
+            top: 0; width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -42,40 +36,30 @@
         }
 
         .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.2s ease-in-out;
+            display: flex; align-items: center; gap: 15px;
+            text-decoration: none; color: white; transition: 0.2s;
         }
-
         .logo-container:hover { transform: scale(1.05); }
-        .nav-logo { height: 45px; width: auto; border-radius: 5px; transition: 0.3s; }
-        .logo-container:hover .nav-logo { filter: drop-shadow(0 0 10px var(--accent)); }
+        .nav-logo { height: 45px; width: auto; border-radius: 5px; }
         .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
 
-        .nav-links { display: flex; align-items: center; gap: 30px; }
-        .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-family: 'Arial', sans-serif; text-transform: uppercase; opacity: 0.7; transition: 0.3s; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { 
+            color: white; text-decoration: none; font-size: 0.85rem; 
+            font-family: 'Arial', sans-serif; text-transform: uppercase; 
+            opacity: 0.7; transition: 0.3s; 
+        }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; font-weight: bold; border: none; color: white; cursor: pointer; text-decoration: none; font-family: 'Arial', sans-serif; font-size: 0.85rem; }
-
-        /* --- NOTIFICATIONS --- */
-        .nav-notif { 
-            position: relative; 
-            cursor: pointer; 
-            display: flex;
-            align-items: center;
-        }
+        /* --- SYSTÈME NOTIFICATIONS --- */
+        .nav-notif { position: relative; cursor: pointer; display: flex; align-items: center; }
         .notif-badge { 
-            position: absolute; top: -5px; right: -8px; background: #ff0000; 
+            position: absolute; top: -8px; right: -8px; background: var(--accent); 
             color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; 
-            display: none; font-family: Arial, sans-serif;
+            display: none; font-family: Arial, sans-serif; font-weight: bold;
         }
         .notif-dropdown {
-            position: absolute; top: 45px; right: 0; width: 280px; background: #0a0a0a;
+            position: absolute; top: 40px; right: 0; width: 280px; background: #0a0a0a;
             border: 1px solid #222; border-radius: 10px; display: none; flex-direction: column;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; text-align: left;
         }
@@ -83,89 +67,44 @@
             padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; 
             font-family: Arial, sans-serif; color: #ccc; text-transform: none; line-height: 1.4;
         }
-        .notif-item strong { color: #ff0000; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        .notif-item strong { color: var(--accent); display: block; margin-bottom: 3px; text-transform: uppercase; }
 
-        /* --- VIDEO SECTION --- */
-        .video-section {
-            position: relative;
-            height: 100vh;
-            width: 100%;
-            overflow: hidden;
-            background: #000;
-        }
-
+        /* --- SECTIONS --- */
+        .video-section { position: relative; height: 100vh; width: 100%; overflow: hidden; background: #000; }
         .video-background iframe {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 100vw; height: 100vh;
-            transform: translate(-50%, -50%);
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 100vh; transform: translate(-50%, -50%);
             pointer-events: none;
         }
-
         @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
         @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
-        /* --- CONTENT SECTION --- */
         .content-section {
-            padding: 100px 20px;
-            text-align: center;
-            background: var(--bg-gradient);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 60vh;
+            padding: 100px 20px; text-align: center; background: var(--bg-gradient);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh;
         }
-
         h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; letter-spacing: 5px; }
-        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.2rem; color: #ccc; margin: 20px 0 40px 0; text-transform: uppercase; letter-spacing: 2px; }
-
+        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.2rem; color: #ccc; margin: 20px 0 40px 0; text-transform: uppercase; }
         .btn-main {
-            padding: 20px 45px;
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: 0.4s;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            padding: 20px 45px; background: var(--accent); color: white; text-decoration: none;
+            font-weight: bold; border-radius: 5px; transition: 0.4s; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
         .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent); }
 
+        .nav-btn { background: var(--accent); padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; color: white; cursor: pointer; font-family: 'Arial', sans-serif; font-size: 0.8rem; }
+
         /* --- FOOTER --- */
-        .site-footer {
-            background: #020202;
-            padding: 60px 50px;
-            border-top: 1px solid #1a0000;
-        }
-
-        .footer-wrap {
-            max-width: 1300px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            align-items: center;
-        }
-
-        .brand-side { display: flex; align-items: center; gap: 20px; cursor: pointer; }
-        .footer-img { height: 40px; border-radius: 4px; filter: grayscale(1); transition: 0.4s; }
-        .brand-side:hover .footer-img { filter: grayscale(0) drop-shadow(0 0 8px var(--accent)); }
-        .brand-tagline { font-size: 0.7rem; color: #444; margin-top: 5px; font-family: 'Arial', sans-serif; }
-
+        .site-footer { background: #020202; padding: 60px 50px; border-top: 1px solid #1a0000; }
+        .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
         .social-grid { display: flex; justify-content: center; gap: 25px; }
-        .social-link { color: #666; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
+        .social-link { color: #666; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
         .social-link:hover { color: var(--accent); }
 
-        .legal-side { text-align: right; font-family: 'Arial', sans-serif; }
-        .legal-link { display: block; color: #333; text-decoration: none; font-size: 0.65rem; margin-bottom: 5px; transition: 0.2s; }
-        .legal-link:hover { color: #666; }
-        .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
-
+        /* --- COOKIES --- */
         .cookie-banner {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px 30px;
-            border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 500px;
-            text-align: center; backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px;
+            border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 450px; text-align: center;
         }
     </style>
 </head>
@@ -178,16 +117,6 @@
         </a>
 
         <div class="nav-links" id="authStatus">
-            <div class="nav-notif" onclick="toggleNotifs()">
-                <span style="font-size: 1.2rem;">🔔</span>
-                <span id="notifBadge" class="notif-badge">0</span>
-                <div id="notifDropdown" class="notif-dropdown">
-                    <div id="notifList">
-                        <div class="notif-item">Chargement...</div>
-                    </div>
-                </div>
-            </div>
-            
             <a href="index.html">Accueil</a>
             <a href="portfolio.html">Portfolio</a>
         </div>
@@ -199,7 +128,7 @@
         </div>
     </section>
 
-    <section id="propos" class="content-section">
+    <section class="content-section">
         <h1>NEXT EDITING</h1>
         <p class="subtitle">Le futur du montage entre vos mains.</p>
         <a href="https://discord.gg/eEAxMb6Twu" class="btn-main">Travailler avec nous</a>
@@ -207,35 +136,22 @@
 
     <footer class="site-footer">
         <div class="footer-wrap">
-            <div class="brand-side" onclick="window.scrollTo(0,0)">
-                <img src="logo.png" alt="" class="footer-img">
-                <div class="brand-info">
-                    <span class="brand-name">Next Editing</span>
-                    <p class="brand-tagline">L'excellence visuelle au service de vos projets.</p>
-                </div>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <img src="logo.png" alt="" style="height:30px;">
+                <span style="font-size:0.9rem;">Next Editing</span>
             </div>
-            
             <div class="social-grid">
-                <a href="https://youtube.com/@nextediting-1?si=QNBiPbEElEF38Y07" target="_blank" class="social-link">YouTube</a>
-                <a href="https://github.com/nextediting" target="_blank" class="social-link">GitHub</a>
-                <a href="https://discord.gg/eEAxMb6Twu" target="_blank" class="social-link">Discord</a>
+                <a href="#" class="social-link">YouTube</a>
+                <a href="#" class="social-link">GitHub</a>
+                <a href="#" class="social-link">Discord</a>
             </div>
-
-            <div class="legal-side">
-                <a href="confidentialite.html" class="legal-link">Politique de confidentialité</a>
-                <a href="cookies.html" class="legal-link">Politique de cookies</a>
-                <a href="mentions.html" class="legal-link">Mentions légales</a>
-                <p class="copyright">NEXT EDITING — 2026</p>
-            </div>
+            <div style="text-align:right; font-size:0.7rem; color:#444;">NEXT EDITING — 2026</div>
         </div>
     </footer>
 
     <div id="cookie-banner" class="cookie-banner">
-        <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de gestion des données.</p>
-        <div class="cookie-btns">
-            <button onclick="acceptCookies()" style="padding:8px 20px; background:var(--accent); color:white; border:none; border-radius:5px; cursor:pointer;">Accepter</button>
-            <button onclick="closeBanner()" style="padding:8px 20px; background:#222; color:#888; border:none; border-radius:5px; cursor:pointer; margin-left:10px;">Refuser</button>
-        </div>
+        <p style="font-size:0.8rem; margin-bottom:15px;">Ce site utilise des cookies.</p>
+        <button onclick="acceptCookies()" style="background:var(--accent); color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Accepter</button>
     </div>
 
     <script type="module">
@@ -256,11 +172,13 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // Détection de l'état de connexion et mise à jour Navbar
+        // --- GESTION NOTIFICATIONS ET NAV ---
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('authStatus');
-            const commonLinks = `
-                <div class="nav-notif" onclick="toggleNotifs()">
+            
+            // On définit le contenu de base de la nav (Cloche + Liens)
+            let navHTML = `
+                <div class="nav-notif" id="notifBtn">
                     <span style="font-size: 1.2rem;">🔔</span>
                     <span id="notifBadge" class="notif-badge">0</span>
                     <div id="notifDropdown" class="notif-dropdown">
@@ -272,17 +190,21 @@
             `;
 
             if (user) {
-                status.innerHTML = commonLinks + `
+                navHTML += `
                     <a href="admin.html" style="color:var(--accent); font-weight:bold;">PANEL ADMIN</a>
-                    <button onclick="logout()" class="nav-btn" style="background:#222 !important; margin-left:10px;">Déconnexion</button>
+                    <button id="logoutBtn" class="nav-btn" style="background:#222; margin-left:10px;">Déconnexion</button>
                 `;
-            } else {
-                status.innerHTML = commonLinks;
             }
-            loadNotifications(); // Relancer le chargement des notifs après mise à jour du HTML
+
+            status.innerHTML = navHTML;
+
+            // Ajout des événements après injection du HTML
+            document.getElementById('notifBtn').onclick = toggleNotifs;
+            if(user) document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
+
+            loadNotifications();
         });
 
-        // Charger les notifs Firebase + Roue locale
         function loadNotifications() {
             onValue(query(ref(db, 'notifications'), limitToLast(5)), (snapshot) => {
                 const data = snapshot.val();
@@ -294,9 +216,9 @@
                 // Notif Roue
                 if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
                     html += `
-                        <a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.05);">
-                            <strong>🎁 CADEAU DISPONIBLE</strong>
-                            Bravo ! Ta roue quotidienne est disponible. Tente de gagner le Nitro !
+                        <a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.1);">
+                            <strong>🎁 ROUE DISPONIBLE</strong>
+                            Ton tour gratuit est prêt ! Tente de gagner.
                         </a>`;
                     count++;
                 }
@@ -309,36 +231,22 @@
                 }
 
                 list.innerHTML = html || '<div class="notif-item">Aucune notification</div>';
-                if(count > 0) {
-                    badge.innerText = count;
-                    badge.style.display = "block";
-                }
+                if(count > 0) { badge.innerText = count; badge.style.display = "block"; }
             });
         }
 
-        window.logout = () => {
-            signOut(auth).then(() => { window.location.reload(); });
-        };
-
-        window.toggleNotifs = () => {
+        function toggleNotifs() {
             const dropdown = document.getElementById('notifDropdown');
             dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
             document.getElementById('notifBadge').style.display = 'none';
-        };
+        }
     </script>
 
     <script>
-        // Cookies
-        window.onload = function() {
-            if (!localStorage.getItem('cookiesAccepted')) {
-                document.getElementById('cookie-banner').style.display = 'block';
-            }
-        };
+        // Cookies simples
+        if (!localStorage.getItem('cookiesAccepted')) document.getElementById('cookie-banner').style.display = 'block';
         function acceptCookies() {
             localStorage.setItem('cookiesAccepted', 'true');
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-        function closeBanner() {
             document.getElementById('cookie-banner').style.display = 'none';
         }
     </script>
