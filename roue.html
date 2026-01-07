@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Editing | Roue de la Fortune</title>
+    <style>
+        body { background: #050505; color: white; font-family: 'Arial', sans-serif; text-align: center; padding: 50px 20px; }
+        .container { max-width: 600px; margin: 0 auto; border: 1px solid #222; padding: 30px; border-radius: 15px; }
+        .btn-discord { 
+            display: inline-block; background: #5865F2; color: white; padding: 15px 30px; 
+            border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn-discord:hover { background: #4752c4; transform: scale(1.05); }
+        .error { color: #ff4444; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 style="color: #ff0000;">ROUE DE LA FORTUNE</h1>
+        <p id="status-text">Pour participer à l'événement, connecte ton compte Discord.</p>
+        <p style="font-size: 0.8rem; color: #888;">Nous vérifierons automatiquement si tu as bien fait 2 invitations sur le serveur.</p>
+
+        <a href="#" id="loginBtn" class="btn-discord">SE CONNECTER AVEC DISCORD</a>
+        
+        <div id="error-msg" class="error"></div>
+    </div>
+
+    <script type="module">
+        // --- CONFIGURATION À REMPLIR ---
+        const CLIENT_ID = "1454969132188565707"; // <--- METS TON ID ICI
+        const REDIRECT_URI = window.location.href.split('#')[0].split('?')[0]; 
+
+        const loginBtn = document.getElementById('loginBtn');
+        const statusText = document.getElementById('status-text');
+
+        // Génération du lien de connexion
+        // On demande "identify" (pour l'ID) et "guilds" (optionnel, pour voir s'il est sur le serv)
+        loginBtn.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+
+        // Lecture du Token après la redirection
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        const accessToken = fragment.get('access_token');
+
+        if (accessToken) {
+            loginBtn.style.display = 'none';
+            statusText.innerText = "Connexion réussie ! Vérification des invitations...";
+
+            // Appel à l'API Discord pour avoir l'ID de l'utilisateur
+            fetch('https://discord.com/api/users/@me', {
+                headers: { authorization: `Bearer ${accessToken}` }
+            })
+            .then(res => res.json())
+            .then(user => {
+                console.log("Utilisateur connecté :", user.username, user.id);
+                
+                // --- ÉTAPE SUIVANTE ---
+                // Ici, on devra chercher dans Firebase si user.id possède 2 invites.
+                // On s'arrête là pour l'instant comme demandé.
+            })
+            .catch(err => {
+                document.getElementById('error-msg').innerText = "Erreur de connexion Discord.";
+            });
+        }
+    </script>
+</body>
+</html>
