@@ -157,6 +157,8 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
             authDomain: "next-editing.firebaseapp.com",
+            // AJOUT DE L'URL CORRECTE ICI :
+            databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "next-editing",
             storageBucket: "next-editing.firebasestorage.app",
             messagingSenderId: "862749246676",
@@ -176,22 +178,19 @@
                 const data = snap.val();
 
                 if (data) {
-                    // On boucle sur chaque notification
                     Object.keys(data).reverse().forEach(key => {
                         const n = data[key];
-                        
-                        // Détection automatique des champs (Titre et Message)
-                        // On cherche n'importe quelle variante envoyée par le panel
-                        const title = n.title || n.titre || n.subject || "ANNONCE";
-                        const message = n.message || n.text || n.desc || n.msg || (typeof n === 'string' ? n : "");
+                        // On récupère le titre et le message du panel
+                        const title = n.title || n.titre || "ANNONCE";
+                        const message = n.message || n.text || n.desc || "";
 
-                        if (message || title !== "ANNONCE") {
+                        if (message || n.title) {
                             html += `
                                 <div class="notif-item" style="border-bottom: 1px solid #222; padding: 12px;">
-                                    <strong style="color: #ff0000; font-size: 0.7rem; display: block; margin-bottom: 3px;">
-                                        ${title.toUpperCase()}
+                                    <strong style="color: #ff0000; font-size: 0.75rem; display: block; margin-bottom: 3px; text-transform: uppercase;">
+                                        ${title}
                                     </strong>
-                                    <p style="margin: 0; font-size: 0.85rem; color: #ccc; font-family: Arial, sans-serif;">
+                                    <p style="margin: 0; font-size: 0.85rem; color: #bbb; font-family: Arial, sans-serif; line-height: 1.4;">
                                         ${message}
                                     </p>
                                 </div>`;
@@ -207,13 +206,14 @@
                 } else {
                     list.innerHTML = '<div class="notif-item" style="text-align:center; padding: 20px; opacity:0.3; font-size: 0.8rem;">Aucune notification</div>';
                     badge.style.display = "none";
+                    badge.innerText = "0";
                 }
             }, (error) => {
-                console.error("Erreur Firebase :", error);
+                console.error("Erreur de connexion Firebase :", error);
             });
         }
 
-        // Toggle du menu
+        // Gestion du menu cloche
         document.getElementById('notifBtn').onclick = (e) => {
             e.stopPropagation();
             const d = document.getElementById('notifDropdown');
