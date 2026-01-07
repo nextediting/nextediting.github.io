@@ -35,7 +35,7 @@
         .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-family: 'Arial', sans-serif; text-transform: uppercase; opacity: 0.7; transition: 0.3s; }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        /* --- NOTIFS (FIX) --- */
+        /* --- NOTIFS --- */
         .nav-notif { position: relative; cursor: pointer; display: flex; align-items: center; margin-right: 10px; }
         .bell-icon { width: 22px; height: 22px; fill: none; stroke: white; stroke-width: 2; }
         .notif-badge { 
@@ -54,28 +54,40 @@
         .notif-item strong { color: var(--accent); display: block; text-transform: uppercase; font-size: 0.75rem; }
         .notif-item p { margin: 5px 0 0; color: #bbb; font-size: 0.85rem; line-height: 1.4; }
 
-        /* --- PIED DE PAGE (STYLE DU CODE DEMANDÉ) --- */
+        /* --- VIDEO BACKGROUND --- */
+        .video-section { position: relative; height: 100vh; width: 100%; overflow: hidden; background: #000; }
+        .video-background iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 100vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* --- CONTENT OVER VIDEO --- */
+        .hero-content {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.3); text-align: center; z-index: 10;
+        }
+        h1 { font-size: clamp(3rem, 10vw, 6rem); margin: 0; letter-spacing: 8px; }
+        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.3rem; color: #ccc; margin: 25px 0 50px 0; text-transform: uppercase; }
+        .btn-main { padding: 22px 50px; background: var(--accent); color: white; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.3s; }
+        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent); }
+
+        /* --- PIED DE PAGE --- */
         .site-footer { background: #020202; padding: 70px 50px; border-top: 1px solid #1a0000; font-family: 'Arial', sans-serif; }
         .footer-wrap { max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; }
-        
         .brand-side { cursor: pointer; }
         .footer-img { height: 50px; margin-bottom: 15px; border-radius: 8px; }
         .brand-name { display: block; font-family: 'Arial Black'; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; }
         .brand-tagline { color: #555; font-size: 0.85rem; margin: 5px 0 0; }
-
         .social-grid { display: flex; gap: 20px; }
         .social-link { color: #444; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; transition: 0.3s; }
         .social-link:hover { color: var(--accent); }
-
         .legal-side { text-align: right; display: flex; flex-direction: column; gap: 8px; }
         .legal-link { color: #444; text-decoration: none; font-size: 0.75rem; transition: 0.3s; }
         .legal-link:hover { color: #888; }
         .copyright { color: #222; font-weight: bold; font-size: 0.75rem; margin-top: 10px; }
-
-        /* HERO SECTION */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--bg-gradient); }
-        h1 { font-size: 5rem; letter-spacing: 10px; margin: 0; }
-        .btn-main { margin-top: 30px; padding: 20px 40px; background: var(--accent); color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -97,10 +109,15 @@
         </div>
     </nav>
 
-    <section class="hero">
-        <h1>NEXT EDITING</h1>
-        <p>L'excellence visuelle au service de vos projets.</p>
-        <a href="https://discord.gg/eEAxMb6Twu" class="btn-main">NOUS REJOINDRE</a>
+    <section class="video-section">
+        <div class="video-background">
+            <iframe src="https://www.youtube.com/embed/yOPjaW5HoNM?autoplay=1&mute=1&loop=1&playlist=yOPjaW5HoNM&controls=0&rel=0&showinfo=0&iv_load_policy=3" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        </div>
+        <div class="hero-content">
+            <h1>NEXT EDITING</h1>
+            <p class="subtitle">L'excellence visuelle au service de vos projets.</p>
+            <a href="https://discord.gg/eEAxMb6Twu" class="btn-main">Travailler avec nous</a>
+        </div>
     </section>
 
     <footer class="site-footer">
@@ -144,7 +161,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // SYSTÈME DE NOTIFICATIONS ROBUSTE
         function loadNotifications() {
             onValue(query(ref(db, 'notifications'), limitToLast(5)), (snap) => {
                 const list = document.getElementById('notifList');
@@ -162,7 +178,6 @@
                         }
                     });
                 }
-
                 list.innerHTML = count > 0 ? html : '<div class="notif-item" style="text-align:center; opacity:0.3;">Aucune notification</div>';
                 badge.innerText = count;
                 badge.style.display = count > 0 ? "flex" : "none";
