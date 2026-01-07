@@ -42,34 +42,60 @@
 
         .nav-btn { background: var(--accent); padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; color: white; cursor: pointer; font-family: 'Arial', sans-serif; font-size: 0.8rem; text-decoration: none; }
 
-        /* --- NOTIFICATIONS --- */
-        .nav-notif { position: relative; cursor: pointer; display: flex; align-items: center; }
+        /* --- NOTIFICATIONS MODERNES --- */
+        .nav-notif { 
+            position: relative; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            padding: 5px;
+            transition: 0.3s;
+        }
+        
+        /* Style de l'icône SVG */
+        .bell-icon {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: 0.3s;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
+        }
+
+        .nav-notif:hover .bell-icon {
+            stroke: var(--accent);
+            filter: drop-shadow(0 0 8px var(--accent));
+            transform: rotate(15deg);
+        }
+
         .notif-badge { 
-            position: absolute; top: -8px; right: -8px; background: var(--accent); 
-            color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; 
-            display: none; font-family: Arial, sans-serif; font-weight: bold;
+            position: absolute; top: -2px; right: -2px; background: var(--accent); 
+            color: white; font-size: 9px; min-width: 14px; height: 14px;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            font-family: Arial, sans-serif; font-weight: bold;
+            box-shadow: 0 0 10px var(--accent);
+            border: 2px solid #050505;
         }
+
         .notif-dropdown {
-            position: absolute; top: 40px; right: 0; width: 280px; background: #0a0a0a;
-            border: 1px solid #222; border-radius: 10px; display: none; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; text-align: left;
+            position: absolute; top: 45px; right: 0; width: 300px; background: #0a0a0a;
+            border: 1px solid #222; border-radius: 12px; display: none; flex-direction: column;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9); z-index: 2000; text-align: left;
+            overflow: hidden;
         }
-        .notif-item { padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; font-family: Arial, sans-serif; color: #ccc; line-height: 1.4; }
-        .notif-item strong { color: var(--accent); display: block; margin-bottom: 3px; text-transform: uppercase; }
 
-        /* --- SECTIONS --- */
-        .video-section { position: relative; height: 100vh; width: 100%; overflow: hidden; background: #000; }
-        .video-background iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; }
-        @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
-        @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
+        .notif-item { 
+            padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.85rem; 
+            font-family: 'Arial', sans-serif; color: #ccc; line-height: 1.4;
+            transition: 0.2s;
+        }
+        .notif-item:hover { background: #111; }
+        .notif-item strong { color: var(--accent); display: block; margin-bottom: 3px; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
 
-        .content-section { padding: 100px 20px; text-align: center; background: var(--bg-gradient); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh; }
-        h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; letter-spacing: 5px; }
-        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.2rem; color: #ccc; margin: 20px 0 40px 0; text-transform: uppercase; }
-        .btn-main { padding: 20px 45px; background: var(--accent); color: white; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.4s; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
-        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent); }
-
-        /* --- FOOTER ORIGINAL --- */
+        /* --- FOOTER --- */
         .site-footer { background: #020202; padding: 60px 50px; border-top: 1px solid #1a0000; }
         .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
         .brand-side { display: flex; align-items: center; gap: 20px; cursor: pointer; }
@@ -95,12 +121,16 @@
 
         <div class="nav-links">
             <div class="nav-notif" id="notifBtn">
-                <span style="font-size: 1.2rem;">🔔</span>
+                <svg class="bell-icon" viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
                 <span id="notifBadge" class="notif-badge">0</span>
                 <div id="notifDropdown" class="notif-dropdown">
                     <div id="notifList"><div class="notif-item">Chargement...</div></div>
                 </div>
             </div>
+            
             <a href="index.html">Accueil</a>
             <a href="portfolio.html">Portfolio</a>
             <div id="authStatus">
@@ -145,8 +175,8 @@
     </footer>
 
     <div id="cookie-banner" class="cookie-banner">
-        <p style="font-size:0.8rem; margin-bottom:15px;">Ce site utilise des cookies.</p>
-        <button onclick="acceptCookies()" style="background:var(--accent); color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Accepter</button>
+        <p style="font-size:0.8rem; margin-bottom:15px; color:#ccc;">Ce site utilise des cookies.</p>
+        <button onclick="acceptCookies()" style="background:var(--accent); color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">Accepter</button>
     </div>
 
     <script type="module">
@@ -167,7 +197,6 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // --- AUTH & NAV ---
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('authStatus');
             if (user) {
@@ -183,7 +212,6 @@
             }
         });
 
-        // --- NOTIFICATIONS ---
         function loadNotifications() {
             onValue(query(ref(db, 'notifications'), limitToLast(5)), (snapshot) => {
                 const data = snapshot.val();
@@ -193,7 +221,7 @@
                 let count = 0;
 
                 if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
-                    html += `<a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.1);"><strong>🎁 ROUE DISPONIBLE</strong>Tour gratuit prêt !</a>`;
+                    html += `<a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.05); border-left: 3px solid var(--accent);"><strong>🎁 CADEAU DISPONIBLE</strong>Ton tour de roue gratuit est prêt !</a>`;
                     count++;
                 }
 
@@ -203,16 +231,25 @@
                         count++;
                     });
                 }
-                list.innerHTML = html || '<div class="notif-item">Aucune notification</div>';
-                if(count > 0) { badge.innerText = count; badge.style.display = "block"; }
+                list.innerHTML = html || '<div class="notif-item" style="text-align:center; padding:30px; opacity:0.5;">Aucune nouvelle notification</div>';
+                if(count > 0) { 
+                    badge.innerText = count; 
+                    badge.style.display = "flex"; 
+                }
             });
         }
 
-        document.getElementById('notifBtn').onclick = () => {
-            const dropdown = document.getElementById('notifDropdown');
-            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-            document.getElementById('notifBadge').style.display = 'none';
+        document.getElementById('notifBtn').onclick = (e) => {
+            e.stopPropagation();
+            const d = document.getElementById('notifDropdown');
+            const isOpen = d.style.display === 'flex';
+            d.style.display = isOpen ? 'none' : 'flex';
+            if(!isOpen) document.getElementById('notifBadge').style.display = 'none';
         };
+
+        document.addEventListener('click', () => {
+            document.getElementById('notifDropdown').style.display = 'none';
+        });
 
         loadNotifications();
     </script>
