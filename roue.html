@@ -5,93 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Editing | Roue de la Fortune</title>
     <style>
-        :root { --accent: #ff4d4d; --bg: #0f0f0f; --card: #1a1a1a; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        :root { --accent: #ff4d4d; --bg: #050505; --card: #111; }
+        body { background: var(--bg); color: white; font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         
-        .container { background: var(--card); padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); width: 100%; max-width: 500px; text-align: center; border: 1px solid #333; }
+        .container { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid #222; width: 100%; max-width: 450px; text-align: center; }
         
-        h1 { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-size: 1.8rem; }
-        .status-msg { color: #888; font-size: 0.9rem; margin-bottom: 30px; }
-
-        .btn-discord { 
-            background: #5865F2; color: white; padding: 14px 28px; border-radius: 12px; 
-            text-decoration: none; font-weight: bold; transition: 0.3s; display: inline-block; border: none;
-        }
-        .btn-discord:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4); }
-
-        /* --- LA ROUE MODERNE --- */
-        #wheelArea { display: none; margin-top: 20px; }
+        /* --- STYLE DE LA ROUE --- */
+        #wheelArea { display: none; margin-top: 20px; position: relative; }
         
-        .wheel-container { position: relative; width: 350px; height: 350px; margin: 0 auto; filter: drop-shadow(0 0 15px rgba(255, 77, 77, 0.2)); }
+        .wheel-container { position: relative; width: 340px; height: 340px; margin: 0 auto; }
         
-        /* Le triangle blanc indicateur */
         .pointer {
             position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            width: 30px; height: 30px; background: white; clip-path: polygon(100% 0, 0 0, 50% 100%);
-            z-index: 10; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+            width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent;
+            border-top: 30px solid white; z-index: 100;
         }
 
         .wheel {
-            width: 100%; height: 100%; border-radius: 50%; border: 10px solid #252525;
+            width: 100%; height: 100%; border-radius: 50%; border: 8px solid #222;
             position: relative; overflow: hidden; transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
-            background: #111;
+            background: conic-gradient(
+                #ff0000 0deg 60deg, #000 60deg 120deg,
+                #ff0000 120deg 180deg, #000 180deg 240deg,
+                #ff0000 240deg 300deg, #eddf00 300deg 360deg
+            );
         }
 
-        /* Les parts de la roue avec SVG pour un alignement parfait du texte */
-        .wheel-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-        .segment { stroke-width: 32; fill: none; }
-        .text-path { fill: white; font-size: 3px; font-weight: bold; text-transform: uppercase; }
+        /* Alignement précis des textes */
+        .segment-text {
+            position: absolute; width: 100%; height: 100%;
+            text-align: center; font-weight: bold; font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .segment-text span {
+            display: inline-block; margin-top: 40px; transform: rotate(0deg);
+        }
 
         #spinBtn {
             margin-top: 30px; background: var(--accent); color: white; width: 100%;
-            padding: 15px; border-radius: 12px; border: none; font-weight: 900;
-            cursor: pointer; transition: 0.3s;
+            padding: 15px; border-radius: 10px; border: none; font-weight: bold;
+            cursor: pointer; font-size: 1.1rem;
         }
-        #spinBtn:disabled { background: #444; cursor: not-allowed; }
 
-        #wheelResult { margin-top: 25px; height: 30px; font-weight: bold; font-size: 1.2rem; }
+        #wheelResult { margin-top: 20px; font-weight: bold; font-size: 1.2rem; min-height: 30px; }
+        .btn-discord { background: #5865F2; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Roue de la Fortune</h1>
-        <p id="status-text" class="status-msg">Connecte ton compte pour tenter ta chance.</p>
+        <h1 style="color: var(--accent); margin-bottom: 5px;">ROUE DE LA FORTUNE</h1>
+        <p id="status-text" style="color: #888; margin-bottom: 25px;">Vérification de ton accès...</p>
         
-        <a href="#" id="loginBtn" class="btn-discord">Se connecter avec Discord</a>
+        <a href="#" id="loginBtn" class="btn-discord">SE CONNECTER AVEC DISCORD</a>
 
         <div id="wheelArea">
             <div class="wheel-container">
                 <div class="pointer"></div>
                 <div id="wheel" class="wheel">
-                    <svg viewBox="0 0 32 32" class="wheel-svg">
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#e63946" stroke-dasharray="16.75 100" stroke-dashoffset="0" />
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#1a1a1a" stroke-dasharray="16.75 100" stroke-dashoffset="-16.75" />
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#e63946" stroke-dasharray="16.75 100" stroke-dashoffset="-33.5" />
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#1a1a1a" stroke-dasharray="16.75 100" stroke-dashoffset="-50.25" />
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#e63946" stroke-dasharray="16.75 100" stroke-dashoffset="-67" />
-                        <circle r="16" cx="16" cy="16" class="segment" stroke="#ffb703" stroke-dasharray="16.75 100" stroke-dashoffset="-83.75" />
-                    </svg>
-                    <div style="position:absolute; inset:0; pointer-events:none;">
-                        <span style="position:absolute; top:20%; left:50%; transform:translateX(-50%) rotate(0deg); font-weight:bold; font-size:0.8rem;">100 pts</span>
-                        <span style="position:absolute; top:50%; left:80%; transform:translate(-50%,-50%) rotate(90deg); font-weight:bold; font-size:0.8rem;">500 pts</span>
-                        <span style="position:absolute; top:80%; left:50%; transform:translateX(-50%) rotate(180deg); font-weight:bold; font-size:0.8rem;">200 pts</span>
-                        <span style="position:absolute; top:50%; left:20%; transform:translate(-50%,-50%) rotate(270deg); font-weight:bold; font-size:0.8rem;">1000 pts</span>
-                    </div>
+                    <div class="segment-text" style="transform: rotate(30deg);"><span>100 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(90deg);"><span>500 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(150deg);"><span>200 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(210deg);"><span>1000 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(270deg);"><span>200 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(330deg); color: black;"><span>NITRO</span></div>
                 </div>
             </div>
             <button id="spinBtn">LANCER LA ROUE</button>
             <div id="wheelResult"></div>
         </div>
         
-        <div id="error-msg" style="color: #ff4444; margin-top: 20px;"></div>
+        <div id="error-msg" style="color: #ff4444; margin-top: 20px; font-weight: bold;"></div>
     </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // Ta config Firebase (inchangée)
     const firebaseConfig = {
         apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
         authDomain: "next-editing.firebaseapp.com",
@@ -118,11 +109,7 @@
 
     if (accessToken) {
         loginBtn.style.display = 'none';
-        statusText.innerText = "Vérification...";
-
-        fetch('https://discord.com/api/users/@me', {
-            headers: { authorization: `Bearer ${accessToken}` }
-        })
+        fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${accessToken}` } })
         .then(res => res.json())
         .then(async (user) => {
             const userRef = ref(db, `utilisateurs/${user.id}`);
@@ -147,31 +134,31 @@
         spinBtn.onclick = async () => {
             if (isSpinning) return;
             isSpinning = true;
-            spinBtn.disabled = true;
             result.innerText = "🎡 Tirage en cours...";
+            result.style.color = "white";
 
-            const targetAngle = [0, 60, 120, 180, 240][Math.floor(Math.random() * 5)];
-            const rotation = 2160 + targetAngle; // 6 tours + l'angle
-
+            // Liste des angles gagnants (on évite 330 qui est le Nitro)
+            const angles = [30, 90, 150, 210, 270]; 
+            const targetAngle = angles[Math.floor(Math.random() * angles.length)];
+            
+            // Rotation : on soustrait l'angle pour que le pointeur (en haut) tombe sur le bon segment
+            const rotation = 3600 + (360 - targetAngle); 
             wheel.style.transform = `rotate(${rotation}deg)`;
 
             setTimeout(async () => {
                 isSpinning = false;
                 let gain = 0;
-                // Logique simplifiée selon l'angle d'arrêt
-                const landing = targetAngle;
-                if (landing === 0) gain = 100;
-                else if (landing === 60) gain = 1000;
-                else if (landing === 120) gain = 200;
-                else if (landing === 180) gain = 500;
-                else gain = 200;
+                if (targetAngle === 30) gain = 100;
+                else if (targetAngle === 90) gain = 500;
+                else if (targetAngle === 150) gain = 200;
+                else if (targetAngle === 210) gain = 1000;
+                else if (targetAngle === 270) gain = 200;
 
                 result.innerHTML = `GAGNÉ : <span style="color:#00ff00">+${gain} CRÉDITS</span>`;
                 
-                // --- ÉTAPE SUIVANTE : Mise à jour Firebase ---
+                // Sauvegarde Firebase
                 const newTotal = currentCredits + gain;
                 await update(ref(db, `utilisateurs/${userId}`), { credits: newTotal });
-                console.log("Base de données mise à jour !");
             }, 5000);
         };
     }
