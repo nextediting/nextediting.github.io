@@ -10,7 +10,6 @@
         
         .container { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid #222; width: 100%; max-width: 450px; text-align: center; }
         
-        /* --- STYLE DE LA ROUE --- */
         #wheelArea { display: none; margin-top: 20px; position: relative; }
         
         .wheel-container { position: relative; width: 340px; height: 340px; margin: 0 auto; }
@@ -31,7 +30,6 @@
             );
         }
 
-        /* Alignement précis des textes */
         .segment-text {
             position: absolute; width: 100%; height: 100%;
             text-align: center; font-weight: bold; font-size: 0.8rem;
@@ -39,14 +37,16 @@
         }
 
         .segment-text span {
-            display: inline-block; margin-top: 40px; transform: rotate(0deg);
+            display: inline-block; margin-top: 40px;
         }
 
         #spinBtn {
             margin-top: 30px; background: var(--accent); color: white; width: 100%;
             padding: 15px; border-radius: 10px; border: none; font-weight: bold;
-            cursor: pointer; font-size: 1.1rem;
+            cursor: pointer; font-size: 1.1rem; transition: 0.3s;
         }
+        
+        #spinBtn:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
 
         #wheelResult { margin-top: 20px; font-weight: bold; font-size: 1.2rem; min-height: 30px; }
         .btn-discord { background: #5865F2; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: bold; }
@@ -63,6 +63,124 @@
         <div id="wheelArea">
             <div class="wheel-container">
                 <div class="pointer"></div>
+                <div id="wheel" class="wheel">
+                    <div class="segment-text" style="transform: rotate(30deg);"><span>100 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(90deg);"><span>500 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(150deg);"><span>200 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(210deg);"><span>1000 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(270deg);"><span>200 CRÉDITS</span></div>
+                    <div class="segment-text" style="transform: rotate(330deg); color: black;"><span>NITRO</span></div>
+                </div>
+            </div>
+            <button id="spinBtn">LANCER LA ROUE</button>
+            <div id="wheelResult"></div>
+        </div>
+        
+        <div id="error-msg" style="color: #ff4444; margin-top: 20px; font-weight: bold;"></div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
+        authDomain: "next-editing.firebaseapp.com",
+        databaseURL: "https://next-editing-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "next-editing",
+        storageBucket: "next-editing.firebasestorage.app",
+        messagingSenderId: "862749246676",
+        appId: "1:862749246676:web:0d3d418f64793e63026741"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const CLIENT_ID = "1454969132188565707"; 
+    const REDIRECT_URI = window.location.href.split('#')[0].split('?')[0]; 
+
+    const loginBtn = document.getElementById('loginBtn');
+    const statusText = document.getElementById('status-text');
+    const errorMsg = document.getElementById('error-msg');
+
+    loginBtn.href = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+
+    const fragment = new URLSearchParams(window.location.hash.slice(1));
+    const accessToken = fragment.get('access_token');
+
+    if (accessToken) {
+        loginBtn.style.display = 'none';
+        fetch('https://discord.com/api/users/@me', { headers: { authorization: `Bearer ${accessToken}` } })
+        .then(res => res.json())
+        .then(async (user) => {
+            const userRef = ref(db, `utilisateurs/${user.id}`);
+            const snapshot = await get(userRef);
+
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                const today = new Date().toLocaleDateString('fr-CA'); // Format YYYY-MM-DD
+
+                if (userData.invites < 2) {
+                    errorMsg.innerText = "Accès refusé : 2 invitations requises.";
+                } else if (userData.derniere_roue === today) {
+                    statusText.innerHTML = `Bienvenue <b style="color:white">${user.username}</b> !`;
+                    errorMsg.style.color = "#ffae00";
+                    errorMsg.innerText = "Tu as déjà joué aujourd'hui. Reviens demain !";
+                } else {
+                    statusText.innerHTML = `Bienvenue <b style="color:white">${user.username}</b> !`;
+                    document.getElementById('wheelArea').style.display = 'block';
+                    setupWheel(user.id, userData.credits || 0);
+                }
+            } else {
+                errorMsg.innerText = "Profil non trouvé dans la base.";
+            }
+        });
+    }
+
+    function setupWheel(userId, currentCredits) {
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const result = document.getElementById('wheelResult');
+        let isSpinning = false;
+
+        spinBtn.onclick = async () => {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinBtn.disabled = true;
+            result.innerText = "🎡 Tirage en cours...";
+            result.style.color = "white";
+
+            const angles = [30, 90, 150, 210, 270]; 
+            const targetAngle = angles[Math.floor(Math.random() * angles.length)];
+            const rotation = 3600 + (360 - targetAngle); 
+            
+            wheel.style.transform = `rotate(${rotation}deg)`;
+
+            setTimeout(async () => {
+                let gain = 0;
+                if (targetAngle === 30) gain = 100;
+                else if (targetAngle === 90) gain = 500;
+                else if (targetAngle === 150) gain = 200;
+                else if (targetAngle === 210) gain = 1000;
+                else if (targetAngle === 270) gain = 200;
+
+                const today = new Date().toLocaleDateString('fr-CA');
+                
+                // Sauvegarde Firebase : Crédits + Date du jour
+                await update(ref(db, `utilisateurs/${userId}`), { 
+                    credits: currentCredits + gain,
+                    derniere_roue: today 
+                });
+
+                result.innerHTML = `GAGNÉ : <span style="color:#00ff00">+${gain} CRÉDITS</span>`;
+                spinBtn.innerText = "À DEMAIN !";
+                isSpinning = false;
+            }, 5000);
+        };
+    }
+</script>
+</body>
+</html>                <div class="pointer"></div>
                 <div id="wheel" class="wheel">
                     <div class="segment-text" style="transform: rotate(30deg);"><span>100 CRÉDITS</span></div>
                     <div class="segment-text" style="transform: rotate(90deg);"><span>500 CRÉDITS</span></div>
