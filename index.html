@@ -13,32 +13,21 @@
         }
 
         body, html {
-            margin: 0; padding: 0;
-            width: 100%;
-            background-color: #050505;
-            color: white;
+            margin: 0; padding: 0; width: 100%;
+            background-color: #050505; color: white;
             font-family: 'Arial Black', sans-serif;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            overflow-x: hidden; scroll-behavior: smooth;
         }
 
         /* --- NAVIGATION --- */
         .navbar {
-            position: absolute;
-            top: 0; width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            box-sizing: border-box;
-            z-index: 1000;
+            position: absolute; top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; box-sizing: border-box; z-index: 1000;
             background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
         }
 
-        .logo-container {
-            display: flex; align-items: center; gap: 15px;
-            text-decoration: none; color: white; transition: 0.2s;
-        }
+        .logo-container { display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; transition: 0.2s; }
         .logo-container:hover { transform: scale(1.05); }
         .nav-logo { height: 45px; width: auto; border-radius: 5px; }
         .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
@@ -51,7 +40,9 @@
         }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        /* --- SYSTÈME NOTIFICATIONS --- */
+        .nav-btn { background: var(--accent); padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; color: white; cursor: pointer; font-family: 'Arial', sans-serif; font-size: 0.8rem; text-decoration: none; }
+
+        /* --- NOTIFICATIONS --- */
         .nav-notif { position: relative; cursor: pointer; display: flex; align-items: center; }
         .notif-badge { 
             position: absolute; top: -8px; right: -8px; background: var(--accent); 
@@ -63,49 +54,35 @@
             border: 1px solid #222; border-radius: 10px; display: none; flex-direction: column;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; text-align: left;
         }
-        .notif-item { 
-            padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; 
-            font-family: Arial, sans-serif; color: #ccc; text-transform: none; line-height: 1.4;
-        }
+        .notif-item { padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; font-family: Arial, sans-serif; color: #ccc; line-height: 1.4; }
         .notif-item strong { color: var(--accent); display: block; margin-bottom: 3px; text-transform: uppercase; }
 
         /* --- SECTIONS --- */
         .video-section { position: relative; height: 100vh; width: 100%; overflow: hidden; background: #000; }
-        .video-background iframe {
-            position: absolute; top: 50%; left: 50%;
-            width: 100vw; height: 100vh; transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
+        .video-background iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none; }
         @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
         @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
-        .content-section {
-            padding: 100px 20px; text-align: center; background: var(--bg-gradient);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh;
-        }
+        .content-section { padding: 100px 20px; text-align: center; background: var(--bg-gradient); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh; }
         h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; letter-spacing: 5px; }
         .subtitle { font-family: 'Arial', sans-serif; font-size: 1.2rem; color: #ccc; margin: 20px 0 40px 0; text-transform: uppercase; }
-        .btn-main {
-            padding: 20px 45px; background: var(--accent); color: white; text-decoration: none;
-            font-weight: bold; border-radius: 5px; transition: 0.4s; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-        }
+        .btn-main { padding: 20px 45px; background: var(--accent); color: white; text-decoration: none; font-weight: bold; border-radius: 5px; transition: 0.4s; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
         .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent); }
 
-        .nav-btn { background: var(--accent); padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; color: white; cursor: pointer; font-family: 'Arial', sans-serif; font-size: 0.8rem; }
-
-        /* --- FOOTER --- */
+        /* --- FOOTER ORIGINAL --- */
         .site-footer { background: #020202; padding: 60px 50px; border-top: 1px solid #1a0000; }
         .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+        .brand-side { display: flex; align-items: center; gap: 20px; cursor: pointer; }
+        .footer-img { height: 40px; border-radius: 4px; filter: grayscale(1); transition: 0.4s; }
+        .brand-side:hover .footer-img { filter: grayscale(0) drop-shadow(0 0 8px var(--accent)); }
         .social-grid { display: flex; justify-content: center; gap: 25px; }
-        .social-link { color: #666; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        .social-link { color: #666; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
         .social-link:hover { color: var(--accent); }
+        .legal-side { text-align: right; font-family: 'Arial', sans-serif; }
+        .legal-link { display: block; color: #333; text-decoration: none; font-size: 0.65rem; margin-bottom: 5px; }
+        .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
 
-        /* --- COOKIES --- */
-        .cookie-banner {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px;
-            border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 450px; text-align: center;
-        }
+        .cookie-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px; border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 450px; text-align: center; }
     </style>
 </head>
 <body>
@@ -116,9 +93,19 @@
             <span class="logo-text">Next Editing</span>
         </a>
 
-        <div class="nav-links" id="authStatus">
+        <div class="nav-links">
+            <div class="nav-notif" id="notifBtn">
+                <span style="font-size: 1.2rem;">🔔</span>
+                <span id="notifBadge" class="notif-badge">0</span>
+                <div id="notifDropdown" class="notif-dropdown">
+                    <div id="notifList"><div class="notif-item">Chargement...</div></div>
+                </div>
+            </div>
             <a href="index.html">Accueil</a>
             <a href="portfolio.html">Portfolio</a>
+            <div id="authStatus">
+                <a href="admin.html" class="nav-btn">Connexion</a>
+            </div>
         </div>
     </nav>
 
@@ -136,16 +123,24 @@
 
     <footer class="site-footer">
         <div class="footer-wrap">
-            <div style="display:flex; align-items:center; gap:15px;">
-                <img src="logo.png" alt="" style="height:30px;">
-                <span style="font-size:0.9rem;">Next Editing</span>
+            <div class="brand-side" onclick="window.scrollTo(0,0)">
+                <img src="logo.png" alt="" class="footer-img">
+                <div class="brand-info">
+                    <span class="brand-name">Next Editing</span>
+                    <p style="font-size: 0.7rem; color: #444; margin: 5px 0 0 0; font-family: Arial;">L'excellence visuelle au service de vos projets.</p>
+                </div>
             </div>
             <div class="social-grid">
-                <a href="#" class="social-link">YouTube</a>
-                <a href="#" class="social-link">GitHub</a>
-                <a href="#" class="social-link">Discord</a>
+                <a href="https://youtube.com/@nextediting-1" target="_blank" class="social-link">YouTube</a>
+                <a href="https://github.com/nextediting" target="_blank" class="social-link">GitHub</a>
+                <a href="https://discord.gg/eEAxMb6Twu" target="_blank" class="social-link">Discord</a>
             </div>
-            <div style="text-align:right; font-size:0.7rem; color:#444;">NEXT EDITING — 2026</div>
+            <div class="legal-side">
+                <a href="confidentialite.html" class="legal-link">Confidentialité</a>
+                <a href="cookies.html" class="legal-link">Cookies</a>
+                <a href="mentions.html" class="legal-link">Mentions légales</a>
+                <p class="copyright">NEXT EDITING — 2026</p>
+            </div>
         </div>
     </footer>
 
@@ -172,39 +167,23 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        // --- GESTION NOTIFICATIONS ET NAV ---
+        // --- AUTH & NAV ---
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('authStatus');
-            
-            // On définit le contenu de base de la nav (Cloche + Liens)
-            let navHTML = `
-                <div class="nav-notif" id="notifBtn">
-                    <span style="font-size: 1.2rem;">🔔</span>
-                    <span id="notifBadge" class="notif-badge">0</span>
-                    <div id="notifDropdown" class="notif-dropdown">
-                        <div id="notifList"><div class="notif-item">Chargement...</div></div>
-                    </div>
-                </div>
-                <a href="index.html">Accueil</a>
-                <a href="portfolio.html">Portfolio</a>
-            `;
-
             if (user) {
-                navHTML += `
-                    <a href="admin.html" style="color:var(--accent); font-weight:bold;">PANEL ADMIN</a>
-                    <button id="logoutBtn" class="nav-btn" style="background:#222; margin-left:10px;">Déconnexion</button>
+                status.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <a href="admin.html" style="color:var(--accent); font-weight:bold; text-decoration:none; font-size:0.85rem;">PANEL ADMIN</a>
+                        <button id="logoutBtn" class="nav-btn" style="background:#222;">Déconnexion</button>
+                    </div>
                 `;
+                document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
+            } else {
+                status.innerHTML = `<a href="admin.html" class="nav-btn">Connexion</a>`;
             }
-
-            status.innerHTML = navHTML;
-
-            // Ajout des événements après injection du HTML
-            document.getElementById('notifBtn').onclick = toggleNotifs;
-            if(user) document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
-
-            loadNotifications();
         });
 
+        // --- NOTIFICATIONS ---
         function loadNotifications() {
             onValue(query(ref(db, 'notifications'), limitToLast(5)), (snapshot) => {
                 const data = snapshot.val();
@@ -213,13 +192,8 @@
                 let html = "";
                 let count = 0;
 
-                // Notif Roue
                 if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
-                    html += `
-                        <a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.1);">
-                            <strong>🎁 ROUE DISPONIBLE</strong>
-                            Ton tour gratuit est prêt ! Tente de gagner.
-                        </a>`;
+                    html += `<a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.1);"><strong>🎁 ROUE DISPONIBLE</strong>Tour gratuit prêt !</a>`;
                     count++;
                 }
 
@@ -229,21 +203,21 @@
                         count++;
                     });
                 }
-
                 list.innerHTML = html || '<div class="notif-item">Aucune notification</div>';
                 if(count > 0) { badge.innerText = count; badge.style.display = "block"; }
             });
         }
 
-        function toggleNotifs() {
+        document.getElementById('notifBtn').onclick = () => {
             const dropdown = document.getElementById('notifDropdown');
             dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
             document.getElementById('notifBadge').style.display = 'none';
-        }
+        };
+
+        loadNotifications();
     </script>
 
     <script>
-        // Cookies simples
         if (!localStorage.getItem('cookiesAccepted')) document.getElementById('cookie-banner').style.display = 'block';
         function acceptCookies() {
             localStorage.setItem('cookiesAccepted', 'true');
