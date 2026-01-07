@@ -6,14 +6,45 @@
     <title>Next Editing | Roue de la Fortune</title>
     <style>
         body { background: #050505; color: white; font-family: 'Arial', sans-serif; text-align: center; padding: 50px 20px; }
-        .container { max-width: 600px; margin: 0 auto; border: 1px solid #222; padding: 30px; border-radius: 15px; }
+        .container { max-width: 600px; margin: 0 auto; border: 1px solid #222; padding: 30px; border-radius: 15px; background: #0a0a0a; }
+        
         .btn-discord { 
             display: inline-block; background: #5865F2; color: white; padding: 15px 30px; 
             border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 20px;
-            transition: 0.3s;
+            transition: 0.3s; border: none; cursor: pointer;
         }
         .btn-discord:hover { background: #4752c4; transform: scale(1.05); }
         .error { color: #ff4444; margin-top: 20px; font-weight: bold; }
+
+        /* --- STYLE DE LA ROUE --- */
+        #wheelArea { display: none; margin-top: 30px; position: relative; }
+        
+        .wheel-box { position: relative; width: 320px; height: 320px; margin: 0 auto; }
+        
+        .wheel {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 8px solid #222; position: relative;
+            overflow: hidden; transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+            background: conic-gradient(
+                #ff0000 0deg 60deg, #000 60deg 120deg,
+                #ff0000 120deg 180deg, #000 180deg 240deg,
+                #ff0000 240deg 300deg, #eddf00 300deg 360deg
+            );
+        }
+
+        .wheel-pointer {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 15px solid transparent;
+            border-right: 15px solid transparent; border-top: 35px solid #fff; z-index: 10;
+        }
+
+        .wheel-label {
+            position: absolute; width: 50%; height: 50%;
+            transform-origin: bottom right; top: 0; left: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: bold; color: white; padding: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -21,16 +52,31 @@
     <div class="container">
         <h1 style="color: #ff0000;">ROUE DE LA FORTUNE</h1>
         <p id="status-text">Pour participer à l'événement, connecte ton compte Discord.</p>
-        <p style="font-size: 0.8rem; color: #888;">Nous vérifierons automatiquement si tu as bien fait 2 invitations sur le serveur.</p>
-
+        
         <a href="#" id="loginBtn" class="btn-discord">SE CONNECTER AVEC DISCORD</a>
+
+        <div id="wheelArea">
+            <div class="wheel-box">
+                <div id="wheel" class="wheel">
+                    <div class="wheel-label" style="transform: rotate(30deg) translate(20px, 10px);">100 CRÉDITS</div>
+                    <div class="wheel-label" style="transform: rotate(90deg) translate(20px, 10px);">500 CRÉDITS</div>
+                    <div class="wheel-label" style="transform: rotate(150deg) translate(20px, 10px);">200 CRÉDITS</div>
+                    <div class="wheel-label" style="transform: rotate(210deg) translate(20px, 10px);">1000 CRÉDITS</div>
+                    <div class="wheel-label" style="transform: rotate(270deg) translate(20px, 10px);">200 CRÉDITS</div>
+                    <div class="wheel-label" style="transform: rotate(330deg) translate(20px, 10px); color:black;">NITRO</div>
+                </div>
+                <div class="wheel-pointer"></div>
+            </div>
+            <button id="spinBtn" class="btn-discord" style="background: #ff0000; width: 100%; max-width: 320px;">LANCER LA ROUE</button>
+            <div id="wheelResult" style="margin-top: 20px; font-weight: bold; font-size: 1.3rem; color: #ff0000; min-height: 30px;"></div>
+        </div>
         
         <div id="error-msg" class="error"></div>
     </div>
 
- <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
@@ -74,9 +120,8 @@
                 const invitesCount = userData.invites || 0;
 
                 if (invitesCount >= 2) {
-                    statusText.innerHTML = `<span style="color:#00ff00">Accès Autorisé !</span><br>Bienvenue ${user.username}. Tu as ${invitesCount} invitations.`;
-                    // --- ÉTAPE SUIVANTE : Afficher la roue ici ---
-                    afficherLaRoue(); 
+                    statusText.innerHTML = `<span style="color:#00ff00">Accès Autorisé !</span><br>Bienvenue ${user.username}.`;
+                    afficherLaRoue(user.id, userData); 
                 } else {
                     statusText.innerHTML = `Accès Refusé.`;
                     errorMsg.innerHTML = `Il te faut 2 invitations (Tu en as : ${invitesCount}).<br>Invite tes amis sur le Discord et réessaie !`;
@@ -91,9 +136,43 @@
         });
     }
 
-    function afficherLaRoue() {
-        console.log("Lancement de l'affichage de la roue...");
-        // On codera l'apparition de la roue à l'étape suivante
+    function afficherLaRoue(userId, userData) {
+        document.getElementById('wheelArea').style.display = 'block';
+        
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const result = document.getElementById('wheelResult');
+        let isSpinning = false;
+
+        spinBtn.onclick = () => {
+            if (isSpinning) return;
+            isSpinning = true;
+            result.innerText = "La roue tourne...";
+            result.style.color = "white";
+
+            // Triche : On choisit un gain parmis les crédits (on évite le Nitro)
+            const angles = [30, 90, 150, 210, 270];
+            const targetAngle = angles[Math.floor(Math.random() * angles.length)];
+            const finalRotation = 1800 + (360 - targetAngle); 
+
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+            setTimeout(async () => {
+                isSpinning = false;
+                let gain = 0;
+                if (targetAngle === 30) gain = 100;
+                if (targetAngle === 90) gain = 500;
+                if (targetAngle === 150) gain = 200;
+                if (targetAngle === 210) gain = 1000;
+                if (targetAngle === 270) gain = 200;
+
+                result.innerText = `BRAVO ! TU AS GAGNÉ ${gain} CRÉDITS !`;
+                result.style.color = "#00ff00";
+
+                // ÉTAPE SUIVANTE : Sauvegarder dans Firebase (on le fera au prochain tour)
+                console.log(`L'utilisateur ${userId} gagne ${gain} crédits.`);
+            }, 5000);
+        };
     }
 </script>
 </body>
