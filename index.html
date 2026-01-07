@@ -39,27 +39,22 @@
         }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        /* --- BOUTONS --- */
         .nav-btn-red { 
             background: var(--accent); padding: 10px 20px; border-radius: 4px; 
             color: white; text-decoration: none; font-size: 0.8rem; font-weight: bold; 
             transition: 0.3s;
         }
-        .nav-btn-red:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--accent); }
 
         .panel-btn {
             display: flex; align-items: center; gap: 8px;
-            background: rgba(43, 21, 75, 0.5);
-            border: 1px solid #7c66ff;
-            padding: 8px 16px; border-radius: 8px;
-            color: #b3a4ff; text-decoration: none;
-            font-family: 'Arial', sans-serif; font-size: 0.85rem; font-weight: bold;
-            transition: 0.3s;
+            background: rgba(43, 21, 75, 0.5); border: 1px solid #7c66ff;
+            padding: 8px 16px; border-radius: 8px; color: #b3a4ff;
+            text-decoration: none; font-family: 'Arial', sans-serif; font-size: 0.85rem; font-weight: bold;
         }
 
         /* --- CLOCHE & NOTIFS --- */
         .nav-notif { position: relative; cursor: pointer; display: flex; align-items: center; margin-right: 10px; }
-        .bell-icon { width: 22px; height: 22px; fill: none; stroke: white; stroke-width: 2; transition: 0.3s; }
+        .bell-icon { width: 22px; height: 22px; fill: none; stroke: white; stroke-width: 2; }
         
         .notif-badge { 
             position: absolute; top: -5px; right: -8px; 
@@ -73,56 +68,34 @@
             position: absolute; top: 45px; right: 0; width: 280px; 
             background: #0f0f0f; border: 1px solid #222; border-radius: 12px; 
             display: none; flex-direction: column; z-index: 2000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); overflow: hidden;
         }
 
         .notif-item { 
-            padding: 12px 15px; 
-            border-bottom: 1px solid #1a1a1a; 
-            font-family: 'Arial', sans-serif; 
-            font-size: 0.9rem; 
-            color: #eee; 
-            display: block; 
-            min-height: 40px; 
+            padding: 15px; border-bottom: 1px solid #1a1a1a; 
+            font-family: 'Arial', sans-serif; color: #eee;
         }
-        .notif-item strong { 
-            color: var(--accent); 
-            display: block; 
-            text-transform: uppercase; 
-            font-size: 0.75rem; 
-            margin-bottom: 3px;
-        }
-        .notif-item p { margin: 0; color: #bbb; font-size: 0.85rem; line-height: 1.3; }
+        .notif-item strong { color: var(--accent); display: block; text-transform: uppercase; font-size: 0.75rem; margin-bottom: 4px; }
+        .notif-item p { margin: 0; color: #bbb; font-size: 0.85rem; line-height: 1.4; }
 
         /* --- SECTIONS --- */
         .video-section { position: relative; height: 100vh; width: 100%; overflow: hidden; background: #000; }
         .video-background iframe {
-            position: absolute; top: 50%; left: 50%;
-            width: 100vw; height: 100vh; transform: translate(-50%, -50%);
-            pointer-events: none;
+            position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); pointer-events: none;
         }
-        @media (min-aspect-ratio: 16/9) { .video-background iframe { height: 56.25vw; } }
-        @media (max-aspect-ratio: 16/9) { .video-background iframe { width: 177.78vh; } }
 
         .content-section {
-            padding: 120px 20px; text-align: center; 
-            background: var(--bg-gradient);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            min-height: 70vh;
+            padding: 120px 20px; text-align: center; background: var(--bg-gradient);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 70vh;
         }
         h1 { font-size: clamp(3rem, 10vw, 6rem); margin: 0; letter-spacing: 8px; }
-        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.3rem; color: #ccc; margin: 25px 0 50px 0; text-transform: uppercase; letter-spacing: 2px; }
-        .btn-main {
-            padding: 22px 50px; background: var(--accent); color: white; text-decoration: none;
-            font-weight: bold; border-radius: 5px; transition: 0.4s; 
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4); text-transform: uppercase;
-        }
+        .subtitle { font-family: 'Arial', sans-serif; font-size: 1.3rem; color: #ccc; margin: 25px 0 50px 0; text-transform: uppercase; }
+        .btn-main { padding: 22px 50px; background: var(--accent); color: white; text-decoration: none; font-weight: bold; border-radius: 5px; box-shadow: 0 0 25px rgba(255, 0, 0, 0.4); }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER FIXE --- */
         .site-footer { background: #020202; padding: 70px 50px; border-top: 1px solid #1a0000; }
-        .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
-        .footer-brand { display: flex; align-items: center; gap: 20px; }
+        .footer-wrap { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+        .footer-brand { display: flex; align-items: center; gap: 15px; }
         .footer-legal { text-align: right; color: #333; font-family: Arial; font-size: 0.75rem; }
     </style>
 </head>
@@ -133,20 +106,15 @@
             <img src="logo.png" alt="Logo" class="nav-logo">
             <span class="logo-text">Next Editing</span>
         </a>
-
         <div class="nav-links">
             <div class="nav-notif" id="notifBtn">
                 <svg class="bell-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 <span id="notifBadge" class="notif-badge">0</span>
-                <div id="notifDropdown" class="notif-dropdown">
-                    <div id="notifList"></div>
-                </div>
+                <div id="notifDropdown" class="notif-dropdown"><div id="notifList"></div></div>
             </div>
             <a href="index.html">Accueil</a>
             <a href="portfolio.html">Portfolio</a>
-            <div id="authStatus">
-                <a href="admin.html" class="nav-btn-red">CONNEXION</a>
-            </div>
+            <div id="authStatus"><a href="admin.html" class="nav-btn-red">CONNEXION</a></div>
         </div>
     </nav>
 
@@ -192,20 +160,19 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
+        // --- AUTH ---
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('authStatus');
             if (user) {
-                status.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <a href="admin.html" class="panel-btn">Panel</a>
-                        <button id="logoutBtn" style="background:none; border:none; color:#444; cursor:pointer; font-size:10px;">Logout</button>
-                    </div>`;
+                status.innerHTML = `<div style="display:flex; align-items:center; gap:15px;">
+                    <a href="admin.html" class="panel-btn">Panel</a>
+                    <button id="logoutBtn" style="background:none; border:none; color:#444; cursor:pointer; font-size:10px;">Logout</button>
+                </div>`;
                 document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
-            } else {
-                status.innerHTML = `<a href="admin.html" class="nav-btn-red">CONNEXION</a>`;
             }
         });
 
+        // --- NOTIFS (VERSION CORRIGÉE) ---
         function loadNotifications() {
             const notifRef = query(ref(db, 'notifications'), limitToLast(5));
             onValue(notifRef, (snapshot) => {
@@ -214,28 +181,20 @@
                 let html = "";
                 let count = 0;
 
-                // 1. Cadeau Local
+                // 1. Cadeau
                 if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
-                    html += `<div class="notif-item" style="border-left: 3px solid #ff0000;">
-                                <strong>🎁 CADEAU</strong>
-                                <p>Ton tour de roue est prêt !</p>
-                             </div>`;
+                    html += `<div class="notif-item" style="border-left: 4px solid red;"><strong>🎁 CADEAU</strong><p>Ton tour de roue est prêt !</p></div>`;
                     count++;
                 }
 
-                // 2. Firebase
+                // 2. Firebase - On vérifie si les données existent
                 const data = snapshot.val();
                 if (data) {
-                    Object.values(data).reverse().forEach(notif => {
-                        // CORRECTION : On vérifie toutes les clés possibles (title/titre et message/text)
-                        const rawTitle = notif.title || notif.titre || "INFO";
-                        const rawText = notif.message || notif.text || notif.msg || "Nouvelle mise à jour";
-
-                        html += `
-                            <div class="notif-item">
-                                <strong>${rawTitle}</strong>
-                                <p>${rawText}</p>
-                            </div>`;
+                    Object.values(data).reverse().forEach(n => {
+                        // Securité : on teste TOUTES les clés possibles
+                        const t = n.title || n.titre || "Notification";
+                        const m = n.message || n.text || n.msg || "Consultez votre panel.";
+                        html += `<div class="notif-item"><strong>${t}</strong><p>${m}</p></div>`;
                         count++;
                     });
                 }
@@ -249,7 +208,7 @@
         document.getElementById('notifBtn').onclick = (e) => {
             e.stopPropagation();
             const d = document.getElementById('notifDropdown');
-            d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+            d.style.display = (d.style.display === 'flex') ? 'none' : 'flex';
         };
 
         window.onclick = () => document.getElementById('notifDropdown').style.display = 'none';
