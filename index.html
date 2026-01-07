@@ -46,6 +46,8 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
+            text-decoration: none;
+            color: white;
             transition: transform 0.2s ease-in-out;
         }
 
@@ -58,8 +60,30 @@
         .nav-links a { color: white; text-decoration: none; font-size: 0.85rem; font-family: 'Arial', sans-serif; text-transform: uppercase; opacity: 0.7; transition: 0.3s; }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
-        /* Style du bouton de connexion / admin */
-        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; opacity: 1 !important; font-weight: bold; border: none; color: white; cursor: pointer; text-decoration: none; font-family: 'Arial', sans-serif; font-size: 0.85rem; }
+        .nav-btn { background: var(--accent) !important; padding: 10px 20px; border-radius: 3px; font-weight: bold; border: none; color: white; cursor: pointer; text-decoration: none; font-family: 'Arial', sans-serif; font-size: 0.85rem; }
+
+        /* --- NOTIFICATIONS --- */
+        .nav-notif { 
+            position: relative; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+        }
+        .notif-badge { 
+            position: absolute; top: -5px; right: -8px; background: #ff0000; 
+            color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; 
+            display: none; font-family: Arial, sans-serif;
+        }
+        .notif-dropdown {
+            position: absolute; top: 45px; right: 0; width: 280px; background: #0a0a0a;
+            border: 1px solid #222; border-radius: 10px; display: none; flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000; text-align: left;
+        }
+        .notif-item { 
+            padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; 
+            font-family: Arial, sans-serif; color: #ccc; text-transform: none; line-height: 1.4;
+        }
+        .notif-item strong { color: #ff0000; display: block; margin-bottom: 5px; text-transform: uppercase; }
 
         /* --- VIDEO SECTION --- */
         .video-section {
@@ -137,60 +161,37 @@
         .legal-link:hover { color: #666; }
         .copyright { font-size: 0.75rem; color: #555; font-weight: bold; margin-top: 10px; }
 
-        /* --- COOKIES --- */
         .cookie-banner {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(10, 10, 10, 0.95); border: 1px solid #333; padding: 20px 30px;
             border-radius: 10px; display: none; z-index: 9999; width: 90%; max-width: 500px;
             text-align: center; backdrop-filter: blur(10px);
         }
-        .cookie-banner p { font-family: 'Arial', sans-serif; font-size: 0.85rem; color: #ccc; margin: 0 0 15px 0; }
-        .cookie-btns { display: flex; gap: 10px; justify-content: center; }
-        .cookie-btn { padding: 8px 20px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .accept { background: var(--accent); color: white; }
-        .refuse { background: #222; color: #888; }
-
-        @media (max-width: 900px) {
-            .footer-wrap { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-            .brand-side { justify-content: center; }
-            .legal-side { text-align: center; }
-        }
-        /* --- STYLE NOTIFICATIONS --- */
-.nav-notif { position: relative; cursor: pointer; margin-right: 15px; }
-.notif-badge { 
-    position: absolute; top: -5px; right: -5px; background: var(--accent); 
-    color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; display: none; 
-}
-.notif-dropdown {
-    position: absolute; top: 40px; right: 0; width: 250px; background: #0a0a0a;
-    border: 1px solid #222; border-radius: 10px; display: none; flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 2000;
-}
-.notif-item { padding: 15px; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; font-family: Arial; color: #ccc; }
-.notif-item:last-child { border-bottom: none; }
-.notif-item strong { color: var(--accent); display: block; margin-bottom: 5px; 
-                   }
     </style>
 </head>
 <body>
 
-   <nav class="navbar">
-   <div class="nav-links">
-    <div class="nav-notif" onclick="toggleNotifs()">
-        <span style="font-size: 1.5rem;">🔔</span>
-        <span id="notifBadge" class="notif-badge">0</span>
-        <div id="notifDropdown" class="notif-dropdown">
-            <div id="notifList">
-                <div class="notif-item">Aucune notification</div>
+    <nav class="navbar">
+        <a href="index.html" class="logo-container">
+            <img src="logo.png" alt="Logo" class="nav-logo">
+            <span class="logo-text">Next Editing</span>
+        </a>
+
+        <div class="nav-links" id="authStatus">
+            <div class="nav-notif" onclick="toggleNotifs()">
+                <span style="font-size: 1.2rem;">🔔</span>
+                <span id="notifBadge" class="notif-badge">0</span>
+                <div id="notifDropdown" class="notif-dropdown">
+                    <div id="notifList">
+                        <div class="notif-item">Chargement...</div>
+                    </div>
+                </div>
             </div>
+            
+            <a href="index.html">Accueil</a>
+            <a href="portfolio.html">Portfolio</a>
         </div>
-    </div>
-    <div id="authStatus">
-        <a href="index.html">Accueil</a>
-        <a href="portfolio.html">Portfolio</a>
-    </div>
-</div>
-</nav>
+    </nav>
 
     <section class="video-section">
         <div class="video-background">
@@ -232,14 +233,15 @@
     <div id="cookie-banner" class="cookie-banner">
         <p>Ce site utilise des cookies pour améliorer votre expérience. En continuant, vous acceptez notre politique de gestion des données.</p>
         <div class="cookie-btns">
-            <button onclick="acceptCookies()" class="cookie-btn accept">Accepter</button>
-            <button onclick="closeBanner()" class="cookie-btn refuse">Refuser</button>
+            <button onclick="acceptCookies()" style="padding:8px 20px; background:var(--accent); color:white; border:none; border-radius:5px; cursor:pointer;">Accepter</button>
+            <button onclick="closeBanner()" style="padding:8px 20px; background:#222; color:#888; border:none; border-radius:5px; cursor:pointer; margin-left:10px;">Refuser</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBBNFvN7kjPa7v9x3KRTnXrNNaOAgBNVFo",
@@ -252,63 +254,93 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getDatabase(app);
 
-        // Détection de l'état de connexion
+        // Détection de l'état de connexion et mise à jour Navbar
         onAuthStateChanged(auth, (user) => {
             const status = document.getElementById('authStatus');
+            const commonLinks = `
+                <div class="nav-notif" onclick="toggleNotifs()">
+                    <span style="font-size: 1.2rem;">🔔</span>
+                    <span id="notifBadge" class="notif-badge">0</span>
+                    <div id="notifDropdown" class="notif-dropdown">
+                        <div id="notifList"><div class="notif-item">Chargement...</div></div>
+                    </div>
+                </div>
+                <a href="index.html">Accueil</a>
+                <a href="portfolio.html">Portfolio</a>
+            `;
+
             if (user) {
-                status.innerHTML = `
-                    <a href="index.html">Accueil</a>
-                    <a href="portfolio.html">Portfolio</a>
+                status.innerHTML = commonLinks + `
                     <a href="admin.html" style="color:var(--accent); font-weight:bold;">PANEL ADMIN</a>
                     <button onclick="logout()" class="nav-btn" style="background:#222 !important; margin-left:10px;">Déconnexion</button>
                 `;
+            } else {
+                status.innerHTML = commonLinks;
             }
+            loadNotifications(); // Relancer le chargement des notifs après mise à jour du HTML
         });
 
-        // Déconnexion
-        window.logout = () => {
-            signOut(auth).then(() => {
-                window.location.reload();
+        // Charger les notifs Firebase + Roue locale
+        function loadNotifications() {
+            onValue(query(ref(db, 'notifications'), limitToLast(5)), (snapshot) => {
+                const data = snapshot.val();
+                const list = document.getElementById('notifList');
+                const badge = document.getElementById('notifBadge');
+                let html = "";
+                let count = 0;
+
+                // Notif Roue
+                if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
+                    html += `
+                        <a href="roue.html" class="notif-item" style="text-decoration:none; display:block; background:rgba(255,0,0,0.05);">
+                            <strong>🎁 CADEAU DISPONIBLE</strong>
+                            Bravo ! Ta roue quotidienne est disponible. Tente de gagner le Nitro !
+                        </a>`;
+                    count++;
+                }
+
+                if (data) {
+                    Object.keys(data).reverse().forEach(id => {
+                        html += `<div class="notif-item"><strong>${data[id].title}</strong>${data[id].message}</div>`;
+                        count++;
+                    });
+                }
+
+                list.innerHTML = html || '<div class="notif-item">Aucune notification</div>';
+                if(count > 0) {
+                    badge.innerText = count;
+                    badge.style.display = "block";
+                }
             });
+        }
+
+        window.logout = () => {
+            signOut(auth).then(() => { window.location.reload(); });
+        };
+
+        window.toggleNotifs = () => {
+            const dropdown = document.getElementById('notifDropdown');
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            document.getElementById('notifBadge').style.display = 'none';
         };
     </script>
 
     <script>
-        // Système de gestion des cookies
+        // Cookies
         window.onload = function() {
             if (!localStorage.getItem('cookiesAccepted')) {
                 document.getElementById('cookie-banner').style.display = 'block';
             }
         };
-
         function acceptCookies() {
             localStorage.setItem('cookiesAccepted', 'true');
             document.getElementById('cookie-banner').style.display = 'none';
         }
-
         function closeBanner() {
             document.getElementById('cookie-banner').style.display = 'none';
         }
     </script>
-function toggleNotifs() {
-    const dropdown = document.getElementById('notifDropdown');
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-    document.getElementById('notifBadge').style.display = 'none'; // On cache le badge quand on regarde
-}
-
-// Vérification de la roue (Notification locale)
-if (localStorage.getItem('lastSpin') !== new Date().toDateString()) {
-    const badge = document.getElementById('notifBadge');
-    badge.innerText = "1";
-    badge.style.display = "block";
-    document.getElementById('notifList').innerHTML = `
-        <a href="roue.html" class="notif-item" style="text-decoration:none; display:block;">
-            <strong>🎁 CADEAU DISPONIBLE</strong>
-            Bravo ! Ta roue quotidienne est disponible. Tente de gagner le Nitro !
-        </a>
-    ` + document.getElementById('notifList').innerHTML;
-}
-    
 </body>
 </html>
